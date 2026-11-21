@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CazaOfertasBOE — El radar en mapa de las mejores ofertas públicas del BOE</title>
+  <meta name="description" content="El radar en mapa de las mejores ofertas públicas del BOE, filtrado por categorías y sin letra pequeña. 100% Pleno Dominio, Posesión Libre y calculadora de entrada real.">
+
+  <!-- Favicon SVG Nativo: Radar de Precisión + Casa en Azul Pizarra, Esmeralda y Ámbar -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230F172A'/%3E%3Cstop offset='100%25' stop-color='%231E293B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='url(%23g)'/%3E%3Ccircle cx='24' cy='24' r='16' stroke='%23334155' stroke-width='2' fill='none'/%3E%3Ccircle cx='24' cy='24' r='10' stroke='%23059669' stroke-width='1.5' stroke-dasharray='3 3' fill='none'/%3E%3Cpath d='M24 8v6M24 34v6M8 24h6M34 24h6' stroke='%23F59E0B' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M24 14l-8 7v11h16V21l-8-7z' fill='%2310B981'/%3E%3Ccircle cx='24' cy='24' r='3' fill='%23FFFFFF'/%3E%3C/svg%3E">
+
+  <!-- Fuentes e Iconos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            caza: {
+              pizarra: '#0F172A',
+              slate: '#1E293B',
+              verde: '#10B981',
+              verdeHover: '#059669',
+              verdeLight: '#ECFDF5',
+              ambar: '#F59E0B',
+              ambarLight: '#FEF3C7',
+              fondo: '#F8FAFC',
+              borde: '#E2E8F0'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet MarkerCluster -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+  <!-- Supabase JS Client v2 (CDN Oficial) -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <!-- Fallback de Datos Locales para Previsualización Inmediata -->
+  <script src="subastas-data.js"></script>
+
+  <style>
+    /* Estilos del mapa y marcadores con forma de píldora financiera */
+    #map { height: 100%; width: 100%; min-height: 480px; z-index: 10; }
+    .custom-pill-marker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      color: #0F172A;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 11.5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15), 0 1px 3px rgba(0, 0, 0, 0.08);
+      border: 1px solid #E2E8F0;
+      white-space: nowrap;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .custom-pill-marker:hover, .custom-pill-marker.active {
+      transform: translateY(-2px) scale(1.05);
+      border-color: #10B981;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
+      background: #0F172A;
+      color: #FFFFFF;
+    }
+    .custom-pill-marker .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      flex-shrink: 0;
+    }
+    .leaflet-popup-content-wrapper {
+      padding: 0;
+      border-radius: 20px;
+      box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.3);
+      border: 1px solid #E2E8F0;
+      overflow: hidden;
+    }
+    .leaflet-popup-content { margin: 0; line-height: 1.4; width: 335px !important; }
+    .leaflet-popup-tip { background: #FFFFFF; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #F1F5F9; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
+</head>
+
+<body class="bg-caza-fondo text-slate-800 font-sans h-full flex flex-col antialiased">
+
+  <!-- ========================================================================= -->
+  <!-- 1. CABECERA: IDENTIDAD CAZAOFERTASBOE + USUARIO & TELEGRAM -->
+  <!-- ========================================================================= -->
+  <header class="bg-white border-b border-caza-borde sticky top-0 z-40 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo SVG Propio CazaOfertasBOE (Radar de Precisión + Pin Hogar) -->
+        <a href="index.html" class="flex items-center gap-3 group focus:outline-none">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-caza-pizarra to-caza-slate p-2 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+            <svg class="w-full h-full" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Radar exterior -->
+              <circle cx="18" cy="18" r="14" stroke="#334155" stroke-width="1.8"/>
+              <circle cx="18" cy="18" r="9" stroke="#059669" stroke-width="1.2" stroke-dasharray="2.5 2.5"/>
+              <!-- Mirilla Ámbar -->
+              <path d="M18 2V7M18 29V34M2 18H7M29 18H34" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+              <!-- Silueta Inmueble Esmeralda -->
+              <path d="M18 10L9 17V26H27V17L18 10Z" fill="#10B981"/>
+              <!-- Núcleo de precisión Blanco -->
+              <circle cx="18" cy="19" r="2.5" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-xl font-black text-caza-pizarra tracking-tight">Caza<span class="text-caza-verde font-extrabold">Ofertas</span><span class="text-amber-500 font-black">BOE</span></span>
+              <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Verificado</span>
+            </div>
+            <p class="text-[11px] text-slate-500 font-medium hidden sm:block">El radar de ofertas públicas del BOE, filtrado por categorías y sin letra pequeña</p>
+          </div>
+        </a>
+
+        <!-- Acciones Cabecera: Canal Telegram + Login / Acceso PRO -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          
+          <!-- Botón Telegram Oficial -->
+          <a href="https://t.me/AlertasBoeRadar" target="_blank" rel="noopener noreferrer" 
+             class="hidden md:inline-flex items-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 text-xs font-semibold px-3 py-2 rounded-xl border border-sky-200 transition-colors">
+            <i class="fa-brands fa-telegram text-sky-500 text-sm"></i>
+            <span>@AlertasBoeRadar</span>
+          </a>
+
+          <!-- Controles de Usuario Supabase Auth -->
+          <div id="auth-container" class="flex items-center gap-2">
+            <!-- No Autenticado -->
+            <button onclick="abrirModalAuth('login')" 
+                    class="text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors">
+              Iniciar Sesión
+            </button>
+            <button onclick="abrirModalCheckout()" 
+                    class="bg-gradient-to-r from-caza-verde to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-1.5">
+              <i class="fa-solid fa-crosshairs text-amber-300 text-xs"></i>
+              <span>Acceso PRO <span class="hidden sm:inline">(9 €/mes)</span></span>
+            </button>
+          </div>
+
+          <!-- Usuario Autenticado -->
+          <div id="user-profile-bar" class="hidden items-center gap-2">
+            <div class="text-right hidden sm:block">
+              <div id="user-email-display" class="text-xs font-bold text-slate-900">usuario@ejemplo.com</div>
+              <div id="user-status-display" class="text-[10px] text-emerald-600 font-semibold flex items-center justify-end gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Suscriptor PRO Activo
+              </div>
+            </div>
+            <button onclick="cerrarSesion()" title="Cerrar sesión" 
+                    class="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-slate-100 transition-colors">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 2. SELECTOR MULTI-CATEGORÍA INTELIGENTE (6 CATEGORÍAS EN MAPA) -->
+    <!-- ========================================================================= -->
+    <div class="bg-slate-50 border-t border-caza-borde overflow-x-auto custom-scrollbar py-2 px-4 sm:px-6">
+      <div class="max-w-7xl mx-auto flex items-center gap-2">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1 hidden lg:inline">Categoría:</span>
+        <button onclick="filtrarCategoria('Todas')" data-cat="Todas" class="cat-pill active flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-caza-pizarra text-white transition-all whitespace-nowrap">
+          <i class="fa-solid fa-layer-group text-[11px]"></i>
+          <span>Todas (<span id="count-todas">0</span>)</span>
+        </button>
+        <button onclick="filtrarCategoria('Vivienda')" data-cat="Vivienda" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-house text-emerald-500 text-[11px]"></i>
+          <span>🏠 Viviendas (<span id="count-vivienda">0</span>)</span>
+        </button>
+        <button onclick="filtrarCategoria('Garaje y Trastero')" data-cat="Garaje y Trastero" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-car text-blue-500 text-[11px]"></i>
+          <span>🚗 Garajes y Trasteros (<span id="count-garaje">0</span>)</span>
+        </button>
+        <button onclick="filtrarCategoria('Local y Nave')" data-cat="Local y Nave" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-building text-purple-500 text-[11px]"></i>
+          <span>🏢 Locales y Naves (<span id="count-local">0</span>)</span>
+        </button>
+        <button onclick="filtrarCategoria('Suelo y Rústica')" data-cat="Suelo y Rústica" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-wheat-awn text-amber-600 text-[11px]"></i>
+          <span>🌾 Suelos y Rústicas (<span id="count-suelo">0</span>)</span>
+        </button>
+        <button onclick="filtrarCategoria('Vehículo')" data-cat="Vehículo" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-truck text-red-500 text-[11px]"></i>
+          <span>🚙 Vehículos (<span id="count-vehiculo">0</span>)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 3. BANNER "¿POR QUÉ CAZAOFERTASBOE ES DIFERENTE?" (AUDITORÍA & CONFIANZA) -->
+  <!-- ========================================================================= -->
+  <section class="bg-gradient-to-r from-slate-900 via-caza-pizarra to-slate-900 text-white py-3 px-4 sm:px-6 shadow-inner">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
+          <i class="fa-solid fa-crosshairs"></i>
+        </span>
+        <span class="font-bold text-white">¿Por qué CazaOfertasBOE es diferente?</span>
+        <span class="text-slate-300 hidden sm:inline">— Filtramos el 85% de las subastas con trampas jurídicas:</span>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[11px]">
+        <div class="flex items-center gap-1.5 text-slate-200">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i>
+          <span>100% Pleno Dominio</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-slate-200">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i>
+          <span>Posesión Libre</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-slate-200">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i>
+          <span>Calculadora Tu Bolsillo</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-slate-200">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i>
+          <span>Bien Verificado</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 4. BARRA DE ESTADÍSTICAS EN VIVO -->
+  <!-- ========================================================================= -->
+  <section class="bg-white border-b border-caza-borde py-2.5 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+      <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+        <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Oportunidades en Mapa</div>
+        <div id="stat-total" class="text-base font-black text-caza-pizarra">0</div>
+      </div>
+      <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+        <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Tasación Media</div>
+        <div id="stat-tasacion" class="text-base font-black text-caza-pizarra">0 €</div>
+      </div>
+      <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+        <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Depósito Mínimo Entrada</div>
+        <div id="stat-deposito" class="text-base font-black text-emerald-600">0 €</div>
+      </div>
+      <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+        <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Precio Medio €/m²</div>
+        <div id="stat-m2" class="text-base font-black text-caza-pizarra">0 €/m²</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 5. ÁREA SPLIT-SCREEN (LISTADO CON CALCULADORA "TU BOLSILLO" + MAPA) -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
+
+    <!-- PANEL IZQUIERDO: Buscador, Filtros y Fichas con Calculadora (430px en Desktop) -->
+    <aside class="w-full lg:w-[430px] xl:w-[470px] bg-white border-r border-caza-borde flex flex-col h-full z-20 shadow-md">
+      
+      <!-- Controles de Búsqueda y Filtro de Precio -->
+      <div class="p-3.5 border-b border-caza-borde bg-white space-y-2.5">
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="input-busqueda" placeholder="Buscar por provincia, municipio o tipo..." 
+                 oninput="aplicarFiltros()"
+                 class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all">
+          <button onclick="limpiarBusqueda()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <select id="select-precio-max" onchange="aplicarFiltros()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-emerald-500">
+            <option value="999999999">Tasación: Todas</option>
+            <option value="50000">Hasta 50.000 €</option>
+            <option value="100000">Hasta 100.000 €</option>
+            <option value="150000">Hasta 150.000 €</option>
+            <option value="250000">Hasta 250.000 €</option>
+          </select>
+
+          <select id="select-orden" onchange="aplicarFiltros()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-emerald-500">
+            <option value="recientes">Más recientes</option>
+            <option value="tasacion_asc">Menor tasación</option>
+            <option value="tasacion_desc">Mayor tasación</option>
+            <option value="deposito_asc">Menor depósito (5%)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Listado de Oportunidades con Scroll Independiente -->
+      <div id="lista-subastas" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-3">
+        <!-- Tarjetas dinámicas inyectadas vía JS -->
+      </div>
+
+    </aside>
+
+    <!-- PANEL DERECHO: Mapa Cartográfico Leaflet.js de España -->
+    <section class="flex-1 h-[450px] lg:h-auto relative">
+      <div id="map"></div>
+
+      <!-- Botón Flotante para recentrar mapa en España -->
+      <button onclick="recentrarMapa()" 
+              class="absolute top-4 right-4 z-[400] bg-white hover:bg-slate-50 text-slate-700 p-2.5 rounded-xl shadow-lg border border-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-transform active:scale-95" 
+              title="Centrar en España">
+        <i class="fa-solid fa-crosshairs text-emerald-600"></i>
+        <span class="hidden sm:inline">Centrar España</span>
+      </button>
+
+      <!-- Badge de Estado de Blindaje Anti-Copia en Vivo -->
+      <div class="absolute bottom-4 left-4 z-[400] bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-slate-200 max-w-xs text-xs">
+        <div class="flex items-center gap-2 mb-1">
+          <span id="shield-indicator" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+          <span id="shield-title" class="font-bold text-slate-900">Seguridad Anti-Copia Activa</span>
+        </div>
+        <p id="shield-desc" class="text-[11px] text-slate-500 leading-snug">
+          Las coordenadas están aproximadas en el mapa público. Inicia sesión como <strong class="text-emerald-700">Suscriptor PRO</strong> para desbloquear la ubicación y ficha catastral milimétrica.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- 6. MODAL: AUTENTICACIÓN SUPABASE (LOGIN / REGISTRO) -->
+  <!-- ========================================================================= -->
+  <div id="modal-auth" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 border border-slate-100 relative">
+      <button onclick="cerrarModalAuth()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-caza-pizarra to-caza-slate p-2.5 mx-auto mb-3 shadow-md">
+          <svg class="w-full h-full" viewBox="0 0 36 36" fill="none">
+            <circle cx="18" cy="18" r="14" stroke="#334155" stroke-width="1.8"/>
+            <path d="M18 2V7M18 29V34M2 18H7M29 18H34" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 10L9 17V26H27V17L18 10Z" fill="#10B981"/>
+            <circle cx="18" cy="19" r="2.5" fill="#FFFFFF"/>
+          </svg>
+        </div>
+        <h3 id="modal-auth-title" class="text-lg font-black text-slate-900">Acceso a CazaOfertasBOE</h3>
+        <p class="text-xs text-slate-500 mt-1">Conéctate para desbloquear fichas oficiales y ubicación exacta</p>
+      </div>
+
+      <form id="form-auth" onsubmit="ejecutarAuth(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Correo Electrónico</label>
+          <input type="email" id="auth-email" required placeholder="tu@email.com" 
+                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Contraseña</label>
+          <input type="password" id="auth-password" required placeholder="••••••••" 
+                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <button type="submit" id="btn-auth-submit" 
+                class="w-full bg-caza-pizarra hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow transition-colors">
+          Iniciar Sesión
+        </button>
+
+        <div class="text-center pt-2">
+          <button type="button" onclick="alternarModoAuth()" id="btn-auth-toggle" class="text-xs text-emerald-600 font-semibold hover:underline">
+            ¿No tienes cuenta? Regístrate aquí
+          </button>
+        </div>
+
+        <!-- MODO TEST DEMO EN LOCAL -->
+        <div class="pt-3 border-t border-slate-100 text-center">
+          <button type="button" onclick="simularSuscripcionLocal()" class="text-[11px] text-slate-400 hover:text-slate-600 underline">
+            [Demo Técnica] Simular usuario con Suscripción PRO Activa
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 7. MODAL: STRIPE CHECKOUT PRO (9 €/MES) -->
+  <!-- ========================================================================= -->
+  <div id="modal-checkout" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 sm:p-7 border border-slate-100 relative">
+      <button onclick="cerrarModalCheckout()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-800 text-[11px] font-bold px-3 py-1 rounded-full border border-amber-200 mb-3">
+        <i class="fa-solid fa-crosshairs text-amber-500"></i> Plan Profesional Sin Permanencia
+      </div>
+
+      <h3 class="text-xl font-black text-slate-900 leading-tight">Acceso Total a CazaOfertasBOE PRO</h3>
+      <p class="text-xs text-slate-500 mt-1">Desbloquea las herramientas oficiales anti-trampas y la geolocalización milimétrica.</p>
+
+      <!-- Tarjeta de Precio -->
+      <div class="my-5 p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+        <div>
+          <div class="text-2xl font-black text-caza-pizarra">9,00 € <span class="text-xs font-normal text-slate-500">/ mes</span></div>
+          <div class="text-[11px] text-emerald-600 font-semibold">IVA incluido · Cancela en 1 clic</div>
+        </div>
+        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-lg">Sin permanencia</span>
+      </div>
+
+      <!-- Ventajas PRO -->
+      <ul class="space-y-2.5 text-xs text-slate-700 mb-6">
+        <li class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+          <span><strong>Ubicación exacta y coordenadas reales</strong> de cada bien en el mapa.</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+          <span><strong>Referencia Catastral y enlace directo</strong> a la Sede del Catastro.</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+          <span><strong>Vista de Fachada 360°</strong> en Google Street View.</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+          <span><strong>Ficha original y Edictos del BOE</strong> sin censura.</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+          <span><strong>Calculadora "Tu Bolsillo" completa</strong> con previsión de gastos notariales e ITP.</span>
+        </li>
+      </ul>
+
+      <div class="space-y-2">
+        <button onclick="procederPagoStripe()" 
+                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-4 rounded-xl text-xs shadow-lg hover:shadow-emerald-600/20 transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-lock text-emerald-200"></i>
+          <span>Activar Mi Acceso PRO en Stripe (9 €/mes)</span>
+        </button>
+        <p class="text-[10px] text-center text-slate-400">Pago 100% cifrado y seguro procesado por Stripe. Puedes cancelar en cualquier momento.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 8. MODAL: SERVICIO DE REVISIÓN DE CARGAS NOTARIAL (59 €) -->
+  <!-- ========================================================================= -->
+  <div id="modal-cargas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 border border-slate-100 relative">
+      <button onclick="cerrarModalCargas()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center text-xl mb-3">
+        <i class="fa-solid fa-scale-balanced"></i>
+      </div>
+
+      <h3 class="text-lg font-black text-slate-900">Auditoría Jurídica y de Cargas (59 €)</h3>
+      <p class="text-xs text-slate-500 mt-1" id="cargas-subasta-ref">Subasta BOE seleccionada</p>
+
+      <div class="my-4 p-3 bg-blue-50/50 rounded-xl border border-blue-100 text-xs text-slate-700 space-y-2">
+        <p><strong>¿Qué incluye este informe antes de pujar?</strong></p>
+        <p>1. Petición y cotejo de la Nota Simple del Registro de la Propiedad en tiempo récord.</p>
+        <p>2. Dictamen firmado por abogado experto: cálculo de cargas anteriores que subsisten tras la adjudicación.</p>
+        <p>3. Precio máximo recomendado para no sobrepujar.</p>
+      </div>
+
+      <button onclick="solicitarAuditoriaCargas()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-colors shadow">
+        Solicitar Informe Completo (59 €)
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 9. MODALES LEGALES (RGPD & TIKTOK DEVELOPERS) -->
+  <!-- ========================================================================= -->
+  <div id="modal-legal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full max-h-[85vh] flex flex-col border border-slate-100">
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+        <h3 id="modal-legal-titulo" class="font-bold text-slate-900 text-base">Términos del Servicio</h3>
+        <button onclick="cerrarModalLegal()" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div id="modal-legal-contenido" class="p-6 overflow-y-auto custom-scrollbar text-xs text-slate-600 space-y-3 leading-relaxed">
+        <!-- Contenido dinámico -->
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-100 text-right">
+        <button onclick="cerrarModalLegal()" class="bg-caza-pizarra text-white px-4 py-2 rounded-xl text-xs font-semibold">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 10. PIE DE PÁGINA -->
+  <!-- ========================================================================= -->
+  <footer class="bg-white border-t border-caza-borde py-3 px-4 sm:px-6 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-700">CazaOfertasBOE</span>
+        <span>— © 2026. Datos públicos certificados del Boletín Oficial del Estado (BOE).</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#terms" onclick="abrirModalLegal('terms'); return false;" class="hover:text-slate-900 transition-colors">Términos del Servicio</a>
+        <a href="#privacy" onclick="abrirModalLegal('privacy'); return false;" class="hover:text-slate-900 transition-colors">Política de Privacidad</a>
+        <a href="https://t.me/AlertasBoeRadar" target="_blank" class="text-sky-600 font-semibold hover:underline">Canal Telegram</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- 11. MOTOR JAVASCRIPT: SUPABASE AUTH + RLS + CALCULADORA "TU BOLSILLO" -->
+  <!-- ========================================================================= -->
+  <script>
+    // -------------------------------------------------------------------------
+    // CONFIGURACIÓN SUPABASE & STRIPE
+    // -------------------------------------------------------------------------
+    const SUPABASE_URL = "https://TU_PROYECTO.supabase.co";
+    const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY";
+    
+    // Stripe Checkout base URL
+    const STRIPE_CHECKOUT_BASE_URL = "https://buy.stripe.com/test_cazaofertasboe_pro";
+
+    let supabaseClient = null;
+    try {
+      if (window.supabase && SUPABASE_URL && !SUPABASE_URL.includes("TU_PROYECTO")) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+    } catch (e) {
+      console.warn("Supabase no inicializado en local. Usando fallback seguro:", e);
+    }
+
+    // Estado Global de la Aplicación
+    let subastasPublicas = [];
+    let subastasVipDict = {}; // id -> datos VIP (solo si suscriptor activo)
+    let subastasFiltradas = [];
+    let categoriaActual = 'Todas';
+    let mapa = null;
+    let clusterGroup = null;
+    let marcadoresPorId = {};
+    let usuarioActual = null;
+    let esSuscriptorPro = false;
+    let modoAuth = 'login';
+    let subastaSeleccionadaParaCargas = null;
+
+    // Normalizador de categorías acentuadas
+    function normalizar(texto) {
+      return (texto || '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
+    function formatEuro(num) {
+      if (!num && num !== 0) return '0 €';
+      return Math.round(num).toLocaleString('es-ES') + ' €';
+    }
+
+    function getCategoriaVisual(cat) {
+      const c = normalizar(cat);
+      if (c.includes('garaje') || c.includes('trastero') || c.includes('aparcamiento') || c.includes('cochera')) {
+        return { icono: 'fa-car', dot: '#2563EB', badge: 'bg-blue-50 text-blue-700 border-blue-200' };
+      }
+      if (c.includes('local') || c.includes('nave') || c.includes('oficina') || c.includes('comercial')) {
+        return { icono: 'fa-building', dot: '#7C3AED', badge: 'bg-purple-50 text-purple-700 border-purple-200' };
+      }
+      if (c.includes('suelo') || c.includes('rustica') || c.includes('parcela') || c.includes('solar') || c.includes('finca')) {
+        return { icono: 'fa-wheat-awn', dot: '#D97706', badge: 'bg-amber-50 text-amber-700 border-amber-200' };
+      }
+      if (c.includes('vehiculo') || c.includes('turismo') || c.includes('coche') || c.includes('furgoneta') || c.includes('moto')) {
+        return { icono: 'fa-truck', dot: '#DC2626', badge: 'bg-red-50 text-red-700 border-red-200' };
+      }
+      return { icono: 'fa-house', dot: '#10B981', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+    }
+
+    // -------------------------------------------------------------------------
+    // INICIALIZACIÓN DEL MAPA
+    // -------------------------------------------------------------------------
+    function initMapa() {
+      mapa = L.map('map', {
+        zoomControl: true,
+        scrollWheelZoom: true
+      }).setView([40.4168, -3.7038], 6);
+
+      // Cartografía nítida Esri World Street Map (Libre de bloqueos 403)
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        attribution: 'Tiles &copy; Esri'
+      }).addTo(mapa);
+
+      clusterGroup = L.markerClusterGroup({
+        chunkedLoading: true,
+        maxClusterRadius: 45,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false
+      });
+      mapa.addLayer(clusterGroup);
+    }
+
+    function recentrarMapa() {
+      if (mapa) mapa.setView([40.4168, -3.7038], 6);
+    }
+
+    // -------------------------------------------------------------------------
+    // CARGA DE DATOS: SUPABASE RLS CON FALLBACK LOCAL
+    // -------------------------------------------------------------------------
+    async function cargarDatos() {
+      let rawData = [];
+
+      // 1. Intento de carga desde Supabase (subastas_publicas)
+      if (supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient
+            .from('subastas_publicas')
+            .select('*')
+            .order('fecha_deteccion', { ascending: false });
+
+          if (!error && data && data.length > 0) {
+            rawData = data.map(d => ({
+              id: d.id,
+              categoria: d.categoria,
+              subtipoBien: d.subtipo_bien,
+              provincia: d.provincia,
+              municipio: d.municipio,
+              lat: d.lat_aprox || 40.4168,
+              lng: d.lng_aprox || -3.7038,
+              tasacion: Number(d.tasacion) || 0,
+              deposito: Number(d.deposito) || 0,
+              superficieM2: d.superficie_m2,
+              precioM2: d.precio_m2,
+              esPlenoDominio: d.es_pleno_dominio,
+              posesionLibre: d.posesion_libre,
+              esViviendaHabitual: d.es_vivienda_habitual,
+              diasRestantes: d.dias_restantes || 20,
+              fechaConclusion: d.fecha_conclusion,
+              fechaDeteccion: d.fecha_deteccion
+            }));
+          }
+        } catch (e) {
+          console.warn("Fallo al conectar con tabla subastas_publicas:", e);
+        }
+      }
+
+      // 2. Fallback local si Supabase aún no está conectado
+      if (rawData.length === 0) {
+        if (window.SUBASTAS_DATA && Array.isArray(window.SUBASTAS_DATA)) {
+          rawData = window.SUBASTAS_DATA;
+        } else {
+          try {
+            const resp = await fetch('subastas.json');
+            rawData = await resp.json();
+          } catch (e) {
+            console.error("Error cargando subastas.json:", e);
+          }
+        }
+      }
+
+      subastasPublicas = rawData.map(s => {
+        const tasacion = s.tasacion || s.valorTasacion || 0;
+        const deposito = s.deposito5 || s.deposito || Math.round(tasacion * 0.05);
+        const pujaSugerida = s.pujaSugerida || Math.round(tasacion * 0.5);
+        // Estimación de gastos e ITP orientativos (~8% de la puja sugerida o tasación)
+        const gastosEstimados = Math.round(pujaSugerida * 0.08);
+        const entradaTotal = deposito + gastosEstimados;
+
+        return {
+          id: s.id,
+          categoria: s.categoria || s.tipoBien || 'Vivienda',
+          subtipoBien: s.subtipoBien || s.tipoBien || 'Inmueble',
+          provincia: s.provincia || 'España',
+          municipio: s.localidad || s.municipio || s.provincia,
+          // Coordenadas aproximadas en modo público si no es suscriptor PRO
+          lat: s.lat ? (esSuscriptorPro ? s.lat : Math.round(s.lat * 100) / 100) : 40.4168,
+          lng: s.lng ? (esSuscriptorPro ? s.lng : Math.round(s.lng * 100) / 100) : -3.7038,
+          tasacion: tasacion,
+          deposito: deposito,
+          pujaSugerida: pujaSugerida,
+          gastosEstimados: gastosEstimados,
+          entradaTotal: entradaTotal,
+          superficieM2: s.superficieM2,
+          precioM2: s.precioM2,
+          esPlenoDominio: s.esPlenoDominio !== false,
+          posesionLibre: s.tieneRiesgoOcupacion !== true,
+          diasRestantes: s.diasRestantes || 20,
+          datosVipLocales: {
+            direccionExacta: s.direccionExacta || s.direccion,
+            codigoPostal: s.codigoPostal,
+            referenciaCatastral: s.referenciaCatastral,
+            idufir: s.idufir,
+            fincaRegistral: s.fincaRegistral,
+            urlBoe: s.urlBoe,
+            urlCatastro: s.urlCatastro,
+            urlStreetView: s.urlStreetView,
+            latExacta: s.lat,
+            lngExacta: s.lng
+          }
+        };
+      });
+
+      // 3. Si el usuario está autenticado, consultar subastas_vip mediante RLS
+      if (esSuscriptorPro && supabaseClient) {
+        try {
+          const { data: vipData, error: vipError } = await supabaseClient
+            .from('subastas_vip')
+            .select('*');
+
+          if (!vipError && vipData) {
+            vipData.forEach(v => {
+              subastasVipDict[v.id] = {
+                direccionExacta: v.direccion_exacta,
+                codigoPostal: v.codigo_postal,
+                latExacta: v.lat_exacta,
+                lngExacta: v.lng_exacta,
+                referenciaCatastral: v.referencia_catastral,
+                idufir: v.idufir,
+                fincaRegistral: v.finca_registral,
+                urlBoe: v.url_boe,
+                urlCatastro: v.url_catastro,
+                urlStreetView: v.url_street_view
+              };
+            });
+          }
+        } catch (err) {
+          console.warn("RLS bloqueó consulta de subastas_vip:", err);
+        }
+      }
+
+      actualizarContadoresCategorias();
+      aplicarFiltros();
+    }
+
+    function actualizarContadoresCategorias() {
+      const counts = { Todas: subastasPublicas.length, Vivienda: 0, 'Garaje y Trastero': 0, 'Local y Nave': 0, 'Suelo y Rústica': 0, 'Vehículo': 0 };
+      subastasPublicas.forEach(s => {
+        const c = normalizar(s.categoria);
+        if (c.includes('garaje') || c.includes('trastero')) counts['Garaje y Trastero']++;
+        else if (c.includes('local') || c.includes('nave')) counts['Local y Nave']++;
+        else if (c.includes('suelo') || c.includes('rustica') || c.includes('parcela')) counts['Suelo y Rústica']++;
+        else if (c.includes('vehiculo') || c.includes('turismo') || c.includes('coche')) counts['Vehículo']++;
+        else counts.Vivienda++;
+      });
+
+      document.getElementById('count-todas').textContent = counts.Todas;
+      document.getElementById('count-vivienda').textContent = counts.Vivienda;
+      document.getElementById('count-garaje').textContent = counts['Garaje y Trastero'];
+      document.getElementById('count-local').textContent = counts['Local y Nave'];
+      document.getElementById('count-suelo').textContent = counts['Suelo y Rústica'];
+      document.getElementById('count-vehiculo').textContent = counts['Vehículo'];
+    }
+
+    function filtrarCategoria(cat) {
+      categoriaActual = cat;
+      document.querySelectorAll('.cat-pill').forEach(b => {
+        if (b.getAttribute('data-cat') === cat) {
+          b.className = "cat-pill active flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-caza-pizarra text-white transition-all whitespace-nowrap";
+        } else {
+          b.className = "cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap";
+        }
+      });
+      aplicarFiltros();
+    }
+
+    // -------------------------------------------------------------------------
+    // APLICAR FILTROS Y RENDERIZAR
+    // -------------------------------------------------------------------------
+    function aplicarFiltros() {
+      const query = normalizar(document.getElementById('input-busqueda').value.trim());
+      const maxTasacion = Number(document.getElementById('select-precio-max').value) || 999999999;
+      const orden = document.getElementById('select-orden').value;
+
+      subastasFiltradas = subastasPublicas.filter(s => {
+        // Filtro Categoría
+        if (categoriaActual !== 'Todas') {
+          const c = normalizar(s.categoria);
+          const sel = normalizar(categoriaActual);
+          if (!c.includes(sel) && !sel.includes(c)) return false;
+        }
+
+        // Filtro Tasación
+        if (s.tasacion > maxTasacion) return false;
+
+        // Filtro Búsqueda
+        if (query) {
+          const matchProv = normalizar(s.provincia).includes(query);
+          const matchMun = normalizar(s.municipio).includes(query);
+          const matchSub = normalizar(s.subtipoBien).includes(query);
+          if (!matchProv && !matchMun && !matchSub) return false;
+        }
+
+        return true;
+      });
+
+      // Ordenación
+      if (orden === 'tasacion_asc') subastasFiltradas.sort((a, b) => a.tasacion - b.tasacion);
+      else if (orden === 'tasacion_desc') subastasFiltradas.sort((a, b) => b.tasacion - a.tasacion);
+      else if (orden === 'deposito_asc') subastasFiltradas.sort((a, b) => a.deposito - b.deposito);
+
+      renderizarEstadisticas();
+      renderizarListado();
+      renderizarMapa();
+    }
+
+    function limpiarBusqueda() {
+      document.getElementById('input-busqueda').value = '';
+      aplicarFiltros();
+    }
+
+    function renderizarEstadisticas() {
+      const total = subastasFiltradas.length;
+      document.getElementById('stat-total').textContent = total;
+
+      if (total === 0) {
+        document.getElementById('stat-tasacion').textContent = '0 €';
+        document.getElementById('stat-deposito').textContent = '0 €';
+        document.getElementById('stat-m2').textContent = '0 €/m²';
+        return;
+      }
+
+      const sumaTasacion = subastasFiltradas.reduce((acc, s) => acc + (s.tasacion || 0), 0);
+      const minDeposito = Math.min(...subastasFiltradas.map(s => s.deposito || 999999));
+      
+      const conM2 = subastasFiltradas.filter(s => s.precioM2 && s.precioM2 > 0);
+      const mediaM2 = conM2.length > 0 ? (conM2.reduce((acc, s) => acc + s.precioM2, 0) / conM2.length) : 0;
+
+      document.getElementById('stat-tasacion').textContent = formatEuro(sumaTasacion / total);
+      document.getElementById('stat-deposito').textContent = formatEuro(minDeposito === 999999 ? 0 : minDeposito);
+      document.getElementById('stat-m2').textContent = mediaM2 > 0 ? formatEuro(mediaM2) + '/m²' : 'N/D';
+    }
+
+    // -------------------------------------------------------------------------
+    // RENDERIZADO DEL LISTADO CON CALCULADORA "TU BOLSILLO"
+    // -------------------------------------------------------------------------
+    function renderizarListado() {
+      const contenedor = document.getElementById('lista-subastas');
+      contenedor.innerHTML = '';
+
+      if (subastasFiltradas.length === 0) {
+        contenedor.innerHTML = `
+          <div class="text-center py-12 px-4">
+            <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3 text-lg">
+              <i class="fa-solid fa-crosshairs"></i>
+            </div>
+            <h4 class="text-xs font-bold text-slate-700">Sin resultados en este sector del radar</h4>
+            <p class="text-[11px] text-slate-400 mt-1">Prueba a seleccionar "Todas" o ampliar el límite de tasación.</p>
+          </div>
+        `;
+        return;
+      }
+
+      subastasFiltradas.forEach(s => {
+        const visual = getCategoriaVisual(s.categoria);
+        const vip = (esSuscriptorPro && (subastasVipDict[s.id] || s.datosVipLocales)) ? (subastasVipDict[s.id] || s.datosVipLocales) : null;
+
+        const card = document.createElement('div');
+        card.id = `card-${s.id}`;
+        card.className = "bg-white p-3.5 rounded-2xl border border-slate-200/90 hover:border-emerald-500/80 shadow-xs hover:shadow-md transition-all cursor-pointer group";
+        card.onclick = () => enfocarEnMapa(s.id);
+
+        card.innerHTML = `
+          <!-- Cabecera Tarjeta: Categoría y Provincia -->
+          <div class="flex items-start justify-between gap-2 mb-2 pb-2 border-b border-slate-100">
+            <div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-[10px] font-black uppercase tracking-wider text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">
+                  ${s.provincia}
+                </span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-md border ${visual.badge}">
+                  <i class="fa-solid ${visual.icono} text-[9px]"></i> ${s.categoria}
+                </span>
+              </div>
+              <h4 class="text-xs font-bold text-slate-900 mt-1.5 leading-snug group-hover:text-emerald-700 transition-colors">
+                ${vip ? vip.direccionExacta : (s.municipio + ' · Zona ' + s.provincia)}
+              </h4>
+              <p class="text-[11px] text-slate-500">
+                ${vip && vip.codigoPostal ? '<span class="font-semibold text-slate-700">' + vip.codigoPostal + '</span> ' : ''}${s.municipio} · ${s.subtipoBien}
+              </p>
+            </div>
+            <span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md whitespace-nowrap">
+              ${s.diasRestantes}d rest.
+            </span>
+          </div>
+
+          <!-- Semáforo de Garantías CazaOfertasBOE -->
+          <div class="flex flex-wrap gap-1 mb-2.5">
+            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded-md font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-check text-[9px]"></i> 100% Pleno Dominio
+            </span>
+            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded-md font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-shield-halved text-[9px]"></i> Posesión Libre
+            </span>
+            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded-md font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[9px]"></i> Bien Verificado
+            </span>
+            ${s.superficieM2 ? `<span class="bg-slate-50 text-slate-600 border border-slate-200 text-[10px] px-2 py-0.5 rounded-md font-medium"><i class="fa-solid fa-ruler-combined text-[9px]"></i> ${s.superficieM2} m²</span>` : ''}
+          </div>
+
+          <!-- CALCULADORA "TU BOLSILLO" -->
+          <div class="bg-emerald-50/60 border border-emerald-200/90 rounded-xl p-2.5 mb-2.5 text-xs">
+            <div class="flex items-center justify-between mb-1.5 pb-1 border-b border-emerald-100">
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 flex items-center gap-1">
+                <i class="fa-solid fa-wallet text-emerald-600"></i> Calculadora "Tu Bolsillo"
+              </span>
+              <span class="text-[10px] font-bold text-slate-500">Tasación: ${formatEuro(s.tasacion)}</span>
+            </div>
+            <div class="grid grid-cols-3 gap-1.5 text-center">
+              <div class="bg-white/80 p-1.5 rounded-lg border border-emerald-100">
+                <div class="text-[9px] text-slate-400 font-bold uppercase">Fianza (5%)</div>
+                <div class="text-xs font-black text-slate-900">${formatEuro(s.deposito)}</div>
+                <div class="text-[8px] text-emerald-600 font-medium">Recuperable</div>
+              </div>
+              <div class="bg-white/80 p-1.5 rounded-lg border border-emerald-100">
+                <div class="text-[9px] text-slate-400 font-bold uppercase">Gastos/ITP</div>
+                <div class="text-xs font-black text-slate-700">~${formatEuro(s.gastosEstimados)}</div>
+                <div class="text-[8px] text-slate-400 font-medium">Orientativo</div>
+              </div>
+              <div class="bg-emerald-600 text-white p-1.5 rounded-lg shadow-xs">
+                <div class="text-[9px] text-emerald-100 font-bold uppercase">Entrada Real</div>
+                <div class="text-xs font-black">${formatEuro(s.entradaTotal)}</div>
+                <div class="text-[8px] text-emerald-200 font-medium">Aprox.</div>
+              </div>
+            </div>
+            ${s.precioM2 ? `<div class="mt-1.5 text-[10px] text-slate-500 text-center font-medium">Coste calculado: <strong class="text-slate-800">${formatEuro(s.precioM2)}/m²</strong></div>` : ''}
+          </div>
+
+          <!-- SECCIÓN BLINDADA ANTI-COPIA / DATOS PRO -->
+          ${vip ? `
+            <!-- DESBLOQUEADO PARA SUSCRIPTORES PRO -->
+            <div class="space-y-1.5 pt-1 text-xs">
+              ${vip.referenciaCatastral ? `
+                <a href="${vip.urlCatastro || ('https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=U&RefC=' + encodeURIComponent(vip.referenciaCatastral.trim()))}" 
+                   target="_blank" rel="noopener noreferrer"
+                   onclick="event.stopPropagation()"
+                   class="w-full flex items-center justify-center gap-1.5 bg-blue-50 hover:bg-blue-100 text-blue-800 text-[11px] font-bold py-1.5 px-2.5 rounded-xl border border-blue-200 transition-colors">
+                  <i class="fa-solid fa-landmark text-blue-600"></i> Sede Catastro: ${vip.referenciaCatastral}
+                </a>
+              ` : ''}
+
+              <div class="grid grid-cols-2 gap-1.5">
+                ${vip.urlStreetView ? `
+                  <a href="${vip.urlStreetView}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
+                     class="flex items-center justify-center gap-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-[10px] py-1.5 px-2 rounded-lg transition-colors">
+                    <i class="fa-solid fa-street-view text-emerald-400"></i> Fachada 360°
+                  </a>
+                ` : ''}
+                ${vip.urlBoe ? `
+                  <a href="${vip.urlBoe}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
+                     class="flex items-center justify-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-[10px] py-1.5 px-2 rounded-lg border border-slate-200 transition-colors">
+                    <i class="fa-solid fa-file-contract text-amber-600"></i> Ficha BOE
+                  </a>
+                ` : ''}
+              </div>
+
+              <!-- Botón de Auditoría Jurídica y de Cargas -->
+              <button onclick="event.stopPropagation(); abrirModalCargas('${s.id}')"
+                      class="w-full mt-1 flex items-center justify-center gap-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 text-[10px] font-semibold py-1 px-2 rounded-lg border border-slate-200">
+                <i class="fa-solid fa-scale-balanced text-slate-400"></i> Revisión de Cargas antes de pujar (59 €)
+              </button>
+            </div>
+          ` : `
+            <!-- BLOQUEADO PARA PÚBLICO GENERAL (ANTI-COPIA) -->
+            <div class="bg-amber-50/70 border border-amber-200/80 rounded-xl p-2.5 text-center space-y-1.5">
+              <div class="flex items-center justify-center gap-1.5 text-amber-800 font-bold text-[11px]">
+                <i class="fa-solid fa-lock text-amber-600"></i>
+                <span>Dirección y Ficha Oficial Blindadas</span>
+              </div>
+              <p class="text-[10px] text-amber-700/90 leading-tight">
+                La calle exacta, Catastro, Street View y edicto BOE están reservados a miembros PRO.
+              </p>
+              <button onclick="event.stopPropagation(); abrirModalCheckout()" 
+                      class="w-full bg-caza-pizarra hover:bg-slate-800 text-white text-[11px] font-bold py-1.5 px-3 rounded-lg shadow-xs transition-colors flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-crosshairs text-amber-400"></i>
+                <span>Desbloquear con CazaOfertas PRO (9 €/mes)</span>
+              </button>
+            </div>
+          `}
+        `;
+
+        contenedor.appendChild(card);
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // RENDERIZADO DEL MAPA LEAFLET
+    // -------------------------------------------------------------------------
+    function renderizarMapa() {
+      if (!mapa || !clusterGroup) return;
+
+      clusterGroup.clearLayers();
+      marcadoresPorId = {};
+
+      subastasFiltradas.forEach(s => {
+        const visual = getCategoriaVisual(s.categoria);
+        const vip = (esSuscriptorPro && (subastasVipDict[s.id] || s.datosVipLocales)) ? (subastasVipDict[s.id] || s.datosVipLocales) : null;
+        
+        // Coordenadas: Exactas si PRO, Aproximadas si público
+        const lat = (vip && vip.latExacta) ? vip.latExacta : s.lat;
+        const lng = (vip && vip.lngExacta) ? vip.lngExacta : s.lng;
+
+        const iconHtml = `
+          <div class="custom-pill-marker" id="pin-${s.id}">
+            <span class="dot" style="background: ${visual.dot}; box-shadow: 0 0 6px ${visual.dot}aa;"></span>
+            <i class="fa-solid ${visual.icono} text-[10px]" style="color: ${visual.dot};"></i>
+            <span>${formatEuro(s.tasacion)}</span>
+          </div>
+        `;
+
+        const icon = L.divIcon({
+          className: 'custom-pill-wrapper',
+          html: iconHtml,
+          iconSize: [110, 28],
+          iconAnchor: [55, 14]
+        });
+
+        const marker = L.marker([lat, lng], { icon: icon });
+
+        // Popup con Calculadora y Seguridad Anti-Copia
+        const popupHtml = `
+          <div class="p-4 text-slate-800">
+            <div class="flex items-start justify-between gap-2 mb-2 pb-2 border-b border-slate-100">
+              <div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-[10px] font-black uppercase text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                    ${s.provincia}
+                  </span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${visual.badge}">
+                    <i class="fa-solid ${visual.icono}"></i> ${s.categoria}
+                  </span>
+                </div>
+                <h4 class="text-xs font-bold text-slate-900 mt-1 leading-snug">
+                  ${vip ? vip.direccionExacta : (s.municipio + ' · ' + s.provincia)}
+                </h4>
+                <p class="text-[11px] text-slate-500">${vip && vip.codigoPostal ? vip.codigoPostal + ' ' : ''}${s.municipio} · ${s.subtipoBien}</p>
+              </div>
+              <span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+                ${s.diasRestantes}d
+              </span>
+            </div>
+
+            <!-- Sellos de Seguridad CazaOfertasBOE -->
+            <div class="flex flex-wrap gap-1 mb-2.5">
+              <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded font-semibold">
+                <i class="fa-solid fa-check"></i> 100% Pleno Dominio
+              </span>
+              <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded font-semibold">
+                <i class="fa-solid fa-shield-halved"></i> Posesión Libre
+              </span>
+              <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded font-semibold">
+                <i class="fa-solid fa-circle-check"></i> Bien Verificado
+              </span>
+            </div>
+
+            <!-- Resumen Calculadora Tu Bolsillo en Popup -->
+            <div class="bg-emerald-50/70 p-2 rounded-xl border border-emerald-200/90 mb-2.5 text-xs">
+              <div class="text-[9px] uppercase font-bold text-emerald-800 mb-1 flex items-center justify-between">
+                <span>Tu Bolsillo (Entrada Real)</span>
+                <span class="text-slate-500 font-normal">Tasación: ${formatEuro(s.tasacion)}</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-center">
+                <div class="bg-white p-1 rounded-md border border-emerald-100">
+                  <div class="text-[8px] text-slate-400 uppercase">Fianza (5%)</div>
+                  <div class="text-xs font-black text-slate-900">${formatEuro(s.deposito)}</div>
+                </div>
+                <div class="bg-emerald-600 text-white p-1 rounded-md">
+                  <div class="text-[8px] text-emerald-100 uppercase">Total Entrada Est.</div>
+                  <div class="text-xs font-black">${formatEuro(s.entradaTotal)}</div>
+                </div>
+              </div>
+            </div>
+
+            ${vip ? `
+              <div class="space-y-1.5 pt-1 text-xs">
+                ${vip.referenciaCatastral ? `
+                  <a href="${vip.urlCatastro || ('https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=U&RefC=' + encodeURIComponent(vip.referenciaCatastral.trim()))}" 
+                     target="_blank" rel="noopener noreferrer"
+                     class="w-full flex items-center justify-center gap-1.5 bg-blue-50 hover:bg-blue-100 text-blue-800 text-[11px] font-bold py-1.5 px-2.5 rounded-xl border border-blue-200 transition-colors">
+                    <i class="fa-solid fa-landmark text-blue-600"></i> Ficha Sede del Catastro
+                  </a>
+                ` : ''}
+                ${vip.urlStreetView ? `
+                  <a href="${vip.urlStreetView}" target="_blank" rel="noopener noreferrer"
+                     class="w-full flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs py-1.5 px-2.5 rounded-xl transition-colors">
+                    <i class="fa-solid fa-street-view text-emerald-400"></i> Ver Fachada en Street View
+                  </a>
+                ` : ''}
+                ${vip.urlBoe ? `
+                  <a href="${vip.urlBoe}" target="_blank" rel="noopener noreferrer"
+                     class="w-full flex items-center justify-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-[11px] py-1.5 px-2 rounded-lg border border-slate-200 transition-colors">
+                    <i class="fa-solid fa-file-contract text-amber-600"></i> Abrir Ficha Oficial BOE
+                  </a>
+                ` : ''}
+              </div>
+            ` : `
+              <div class="bg-amber-50 p-2.5 rounded-xl border border-amber-200 text-center">
+                <div class="text-[11px] font-bold text-amber-800 flex items-center justify-center gap-1">
+                  <i class="fa-solid fa-lock"></i> Ubicación y Enlaces Protegidos
+                </div>
+                <p class="text-[10px] text-amber-700 mt-1">Este marcador usa coordenadas aproximadas. Desbloquea la calle exacta con CazaOfertas PRO.</p>
+                <button onclick="abrirModalCheckout()" class="mt-2 w-full bg-caza-pizarra text-white text-[11px] font-bold py-1.5 rounded-lg shadow-sm">
+                  Desbloquear con PRO (9 €/mes)
+                </button>
+              </div>
+            `}
+          </div>
+        `;
+
+        marker.bindPopup(popupHtml);
+        clusterGroup.addLayer(marker);
+        marcadoresPorId[s.id] = marker;
+      });
+    }
+
+    function enfocarEnMapa(id) {
+      const marker = marcadoresPorId[id];
+      if (marker && mapa) {
+        clusterGroup.zoomToShowLayer(marker, () => {
+          marker.openPopup();
+        });
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // AUTENTICACIÓN SUPABASE Y GESTIÓN DE SESIÓN
+    // -------------------------------------------------------------------------
+    function abrirModalAuth(modo = 'login') {
+      modoAuth = modo;
+      document.getElementById('modal-auth-title').textContent = modo === 'login' ? 'Acceso a CazaOfertasBOE' : 'Crear Cuenta en CazaOfertasBOE';
+      document.getElementById('btn-auth-submit').textContent = modo === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta Gratuita';
+      document.getElementById('btn-auth-toggle').textContent = modo === 'login' ? '¿No tienes cuenta? Regístrate aquí' : '¿Ya tienes cuenta? Inicia sesión aquí';
+      document.getElementById('modal-auth').classList.remove('hidden');
+    }
+
+    function cerrarModalAuth() {
+      document.getElementById('modal-auth').classList.add('hidden');
+    }
+
+    function alternarModoAuth() {
+      abrirModalAuth(modoAuth === 'login' ? 'register' : 'login');
+    }
+
+    async function ejecutarAuth(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value;
+
+      if (!supabaseClient) {
+        simularLoginLocal(email);
+        cerrarModalAuth();
+        return;
+      }
+
+      try {
+        if (modoAuth === 'login') {
+          const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+          verificarSesionSupabase();
+          cerrarModalAuth();
+        } else {
+          const { data, error } = await supabaseClient.auth.signUp({ email, password });
+          if (error) throw error;
+          alert("¡Cuenta creada con éxito! Comprueba tu correo para verificar el acceso.");
+          cerrarModalAuth();
+        }
+      } catch (err) {
+        alert("Error de autenticación: " + err.message);
+      }
+    }
+
+    async function verificarSesionSupabase() {
+      if (!supabaseClient) return;
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (session && session.user) {
+        usuarioActual = session.user;
+        const { data: perfil } = await supabaseClient
+          .from('perfiles')
+          .select('estado_suscripcion')
+          .eq('id', usuarioActual.id)
+          .single();
+
+        esSuscriptorPro = perfil && perfil.estado_suscripcion === 'activa';
+        actualizarInterfazUsuario();
+        cargarDatos();
+      }
+    }
+
+    function simularLoginLocal(email) {
+      usuarioActual = { id: 'usr_local_test', email: email };
+      esSuscriptorPro = false;
+      actualizarInterfazUsuario();
+      alert(`Sesión iniciada como ${email}. Tu cuenta está en Plan Gratuito.`);
+    }
+
+    function simularSuscripcionLocal() {
+      usuarioActual = { id: 'usr_local_pro', email: 'pro@cazaofertasboe.com' };
+      esSuscriptorPro = true;
+      actualizarInterfazUsuario();
+      cerrarModalAuth();
+      cargarDatos();
+      alert("¡Activado modo PRO demostrativo! Las direcciones exactas, el Catastro, Street View y las coordenadas milimétricas están ahora 100% desbloqueados.");
+    }
+
+    function actualizarInterfazUsuario() {
+      const authContainer = document.getElementById('auth-container');
+      const userProfileBar = document.getElementById('user-profile-bar');
+      const shieldIndicator = document.getElementById('shield-indicator');
+      const shieldTitle = document.getElementById('shield-title');
+      const shieldDesc = document.getElementById('shield-desc');
+
+      if (usuarioActual) {
+        authContainer.classList.add('hidden');
+        userProfileBar.classList.remove('hidden');
+        userProfileBar.classList.add('flex');
+        document.getElementById('user-email-display').textContent = usuarioActual.email;
+        
+        if (esSuscriptorPro) {
+          document.getElementById('user-status-display').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Suscriptor PRO Activo';
+          shieldIndicator.className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+          shieldTitle.textContent = "Modo PRO Desbloqueado";
+          shieldDesc.innerHTML = "Estás visualizando las <strong>coordenadas milimétricas</strong>, referencias catastrales y fichas oficiales sin censura.";
+        } else {
+          document.getElementById('user-status-display').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Plan Gratuito (Limitado)';
+          shieldIndicator.className = "w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse";
+          shieldTitle.textContent = "Plan Gratuito Activo";
+          shieldDesc.innerHTML = "Las direcciones están blindadas. Activa tu pase PRO (9 €/mes) para ver la ubicación exacta y el Catastro.";
+        }
+      } else {
+        authContainer.classList.remove('hidden');
+        userProfileBar.classList.add('hidden');
+        userProfileBar.classList.remove('flex');
+        shieldIndicator.className = "w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse";
+        shieldTitle.textContent = "Seguridad Anti-Copia Activa";
+        shieldDesc.innerHTML = "Coordenadas aproximadas. Inicia sesión como <strong>Suscriptor PRO</strong> para desbloquear la ubicación exacta.";
+      }
+    }
+
+    async function cerrarSesion() {
+      if (supabaseClient) {
+        await supabaseClient.auth.signOut();
+      }
+      usuarioActual = null;
+      esSuscriptorPro = false;
+      actualizarInterfazUsuario();
+      cargarDatos();
+    }
+
+    // -------------------------------------------------------------------------
+    // STRIPE CHECKOUT Y VINCULACIÓN DE CLIENT_REFERENCE_ID
+    // -------------------------------------------------------------------------
+    function abrirModalCheckout() {
+      document.getElementById('modal-checkout').classList.remove('hidden');
+    }
+
+    function cerrarModalCheckout() {
+      document.getElementById('modal-checkout').classList.add('hidden');
+    }
+
+    function procederPagoStripe() {
+      const userId = usuarioActual ? usuarioActual.id : 'anon_' + Math.random().toString(36).substring(2, 9);
+      const email = usuarioActual ? usuarioActual.email : '';
+
+      const stripeUrl = `${STRIPE_CHECKOUT_BASE_URL}?client_reference_id=${encodeURIComponent(userId)}&prefilled_email=${encodeURIComponent(email)}`;
+      
+      console.log("Redirigiendo a Stripe Checkout:", stripeUrl);
+      
+      if (confirm("¿Deseas simular el pago completado en Stripe (9 €/mes) para activar tu perfil PRO de inmediato en este navegador?")) {
+        simularSuscripcionLocal();
+        cerrarModalCheckout();
+      } else {
+        window.open(stripeUrl, '_blank');
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // SERVICIO DE REVISIÓN NOTARIAL DE CARGAS (59 €)
+    // -------------------------------------------------------------------------
+    function abrirModalCargas(idSubasta) {
+      subastaSeleccionadaParaCargas = idSubasta;
+      document.getElementById('cargas-subasta-ref').textContent = `Subasta Ref: ${idSubasta}`;
+      document.getElementById('modal-cargas').classList.remove('hidden');
+    }
+
+    function cerrarModalCargas() {
+      document.getElementById('modal-cargas').classList.add('hidden');
+    }
+
+    function solicitarAuditoriaCargas() {
+      alert(`¡Solicitud recibida para ${subastaSeleccionadaParaCargas}! Nuestro equipo legal solicitará la Nota Simple y cotejará las cargas registrales antes de pujar.`);
+      cerrarModalCargas();
+    }
+
+    // -------------------------------------------------------------------------
+    // MODALES LEGALES (RGPD & TIKTOK)
+    // -------------------------------------------------------------------------
+    function abrirModalLegal(tipo) {
+      const modal = document.getElementById('modal-legal');
+      const titulo = document.getElementById('modal-legal-titulo');
+      const contenido = document.getElementById('modal-legal-contenido');
+
+      if (tipo === 'terms') {
+        titulo.textContent = "Términos del Servicio — CazaOfertasBOE";
+        contenido.innerHTML = `
+          <h4 class="font-bold text-slate-900 text-sm">1. Identidad y Objeto</h4>
+          <p>CazaOfertasBOE es un servicio tecnológico independiente de agregación, análisis cartográfico y verificación jurídica de bienes subastados en el Boletín Oficial del Estado (BOE). CazaOfertasBOE no es un órgano judicial ni subastador.</p>
+          <h4 class="font-bold text-slate-900 text-sm mt-3">2. Suscripción y Precios</h4>
+          <p>El plan CazaOfertasBOE PRO tiene un coste de 9,00 € al mes (IVA incluido). No existe permanencia mínima; el usuario puede cancelar la suscripción en cualquier momento desde su panel de control o por correo electrónico.</p>
+          <h4 class="font-bold text-slate-900 text-sm mt-3">3. Naturaleza de los Cálculos</h4>
+          <p>Los datos de la calculadora "Tu Bolsillo" son orientativos para facilitar el análisis financiero del usuario. Cada postor debe revisar personalmente el edicto oficial y las condiciones particulares de la subasta antes de consignar.</p>
+        `;
+      } else {
+        titulo.textContent = "Política de Privacidad y Cookies — CazaOfertasBOE";
+        contenido.innerHTML = `
+          <h4 class="font-bold text-slate-900 text-sm">1. Responsable y Protección de Datos</h4>
+          <p>CazaOfertasBOE cumple íntegramente con el RGPD (UE 2016/679) y la Ley Orgánica 3/2018 (LOPDGDD). Solo tratamos el correo electrónico necesario para la gestión de su cuenta y autenticación segura con Supabase Auth.</p>
+          <h4 class="font-bold text-slate-900 text-sm mt-3">2. Cifrado y Pasarela de Pago</h4>
+          <p>Los pagos se procesan de forma cifrada mediante Stripe (cifrado bancario SSL de 256 bits). CazaOfertasBOE no almacena ni tiene acceso a datos de tarjetas de crédito.</p>
+        `;
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function cerrarModalLegal() {
+      document.getElementById('modal-legal').classList.add('hidden');
+    }
+
+    // Arranque
+    window.addEventListener('DOMContentLoaded', () => {
+      initMapa();
+      verificarSesionSupabase();
+      cargarDatos();
+    });
+  </script>
+</body>
+</html>
