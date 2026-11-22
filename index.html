@@ -458,15 +458,25 @@
             <span class="text-emerald-600 font-bold text-xs uppercase tracking-wider bg-emerald-100 px-3 py-1 rounded-full">El Mapa del Proceso</span>
             <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 mt-3">¿Cómo funciona una subasta del BOE de principio a fin?</h2>
             <p class="text-slate-600 mt-3 text-base">Cualquier ciudadano mayor de edad puede participar sin necesidad de abogado ni procurador. Este es el recorrido exacto dividido en 6 fases.</p>
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                    <i class="fa-solid fa-lock-open text-emerald-600"></i> Fases 1 y 2 en abierto
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                    <i class="fa-solid fa-lock text-amber-600"></i> Fases 3 a 6: Protocolo legal y fianza exclusivos PRO
+                </span>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- FASE 1 -->
+            <!-- FASE 1 (GRATIS) -->
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="w-10 h-10 rounded-xl bg-slate-900 text-emerald-400 font-extrabold flex items-center justify-center text-lg">1</span>
-                        <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">Antes de empezar</span>
+                        <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 flex items-center gap-1">
+                            <i class="fa-solid fa-lock-open text-[10px]"></i> En Abierto
+                        </span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">Preparación e Identidad Digital</h3>
                     <p class="text-sm text-slate-600 leading-relaxed mb-4">
@@ -485,12 +495,14 @@
                 </div>
             </div>
 
-            <!-- FASE 2 -->
+            <!-- FASE 2 (GRATIS) -->
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="w-10 h-10 rounded-xl bg-slate-900 text-emerald-400 font-extrabold flex items-center justify-center text-lg">2</span>
-                        <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">Investigación</span>
+                        <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 flex items-center gap-1">
+                            <i class="fa-solid fa-lock-open text-[10px]"></i> En Abierto
+                        </span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">Análisis del Bien y Cargas</h3>
                     <p class="text-sm text-slate-600 leading-relaxed mb-4">
@@ -509,99 +521,183 @@
                 </div>
             </div>
 
-            <!-- FASE 3 -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
+            <!-- FASE 3 (VIP) -->
+            <div class="fase-vip-card relative overflow-hidden bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-amber-400 transition flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="w-10 h-10 rounded-xl bg-slate-900 text-amber-400 font-extrabold flex items-center justify-center text-lg">3</span>
-                        <span class="text-xs font-semibold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-lg">Paso Obligatorio</span>
+                        <span class="fase-tag-vip text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                            <i class="fa-solid fa-lock text-[10px]"></i> Solo Miembros PRO
+                        </span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">Constitución del Depósito (NRC)</h3>
-                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                        Para que el sistema te deje pujar, debes ingresar una fianza que demuestra solvencia: normalmente el <strong>5% del valor de subasta</strong> (o un importe fijo como 1.000 € en bienes muebles/garajes según la nueva Ley de Eficiencia).
+                    <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                        Para que el sistema te deje pujar, debes ingresar una fianza judicial que demuestra solvencia: normalmente el <strong>5% del valor de subasta</strong> (o 1.000 € fijos en muebles y garajes según la Ley de Eficiencia).
                     </p>
-                    <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
-                        <li class="flex items-start gap-2">
-                            <span class="text-amber-500 font-bold">✓</span>
-                            <span>El pago se hace telemáticamente desde el portal del BOE a través de la <strong>Agencia Tributaria (AEAT)</strong> mediante cargo en cuenta o tarjeta de entidad colaboradora.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-amber-500 font-bold">✓</span>
-                            <span>Al instante se genera un código <strong>NRC</strong> y se habilita tu botón de puja.</span>
-                        </li>
-                    </ul>
+                    
+                    <!-- Contenido detallado difuminado para no suscriptores -->
+                    <div class="fase-vip-contenido blur-xs sm:blur-[2.5px] select-none opacity-40 pointer-events-none transition-all">
+                        <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-500 font-bold">✓</span>
+                                <span>El pago se hace telemáticamente desde el portal del BOE a través de la <strong>Agencia Tributaria (AEAT)</strong> mediante cargo en cuenta o tarjeta.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-500 font-bold">✓</span>
+                                <span>Al instante se genera un código <strong>NRC</strong> y se habilita tu botón de puja judicial.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bloque de llamada al pago / candado -->
+                <div class="fase-lock-overlay mt-3 p-3.5 rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 border border-amber-500/30 text-white text-center shadow-md">
+                    <div class="flex items-center justify-center gap-1.5 text-amber-300 text-xs font-black uppercase mb-1">
+                        <i class="fa-solid fa-lock"></i> Protocolo NRC & Fianza VIP
+                    </div>
+                    <p class="text-[11px] text-slate-300 mb-2.5">Descubre cómo recuperar la fianza si pierdes y los bancos autorizados para el NRC instantáneo.</p>
+                    <button onclick="abrirModalCheckout()" class="w-full py-2 px-3 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs transition shadow flex items-center justify-center gap-1">
+                        <span>Desbloquear por 9 €/mes</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+                <div class="fase-unlocked-badge hidden mt-3 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-circle-check text-emerald-600"></i> Protocolo NRC Desbloqueado
                 </div>
             </div>
 
-            <!-- FASE 4 -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
+            <!-- FASE 4 (VIP) -->
+            <div class="fase-vip-card relative overflow-hidden bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-amber-400 transition flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="w-10 h-10 rounded-xl bg-slate-900 text-emerald-400 font-extrabold flex items-center justify-center text-lg">4</span>
-                        <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">20 Días Naturales</span>
+                        <span class="fase-tag-vip text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                            <i class="fa-solid fa-lock text-[10px]"></i> Solo Miembros PRO
+                        </span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">La Puja en el Portal del BOE</h3>
-                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                        Las subastas duran <strong>20 días naturales</strong>. Puedes pujar por tramos prefijados o establecer una <strong>puja máxima automática</strong> (el sistema pujará por ti lo mínimo necesario para superar a otros hasta tu tope).
+                    <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                        Las subastas duran <strong>20 días naturales</strong>. Puedes pujar por tramos o fijar una <strong>puja máxima automática</strong> donde el sistema supera a otros con lo mínimo indispensable.
                     </p>
-                    <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
-                        <li class="flex items-start gap-2">
-                            <span class="text-emerald-500 font-bold">✓</span>
-                            <span><strong>Reserva de postura:</strong> Marca esta casilla si quieres que retengan tu depósito por si el ganador final no paga el resto (así pasarías a ganar tú).</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-emerald-500 font-bold">✓</span>
-                            <span><strong>Cierre:</strong> En subastas antiguas hay prórroga de 1h si pujan al final; en las nuevas bajo la <em>Ley de Eficiencia</em>, las pujas son secretas y cierran a hora fija sin prórroga.</span>
-                        </li>
-                    </ul>
+
+                    <!-- Contenido detallado difuminado para no suscriptores -->
+                    <div class="fase-vip-contenido blur-xs sm:blur-[2.5px] select-none opacity-40 pointer-events-none transition-all">
+                        <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-500 font-bold">✓</span>
+                                <span><strong>Reserva de postura:</strong> Marca esta casilla para que retengan tu depósito por si el adjudicatario quiebra la subasta y te asignan el piso a ti.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-500 font-bold">✓</span>
+                                <span><strong>Cierre y Ley de Eficiencia:</strong> Nuevas subastas ciegas sin prórroga de última hora y control de pujas simultáneas.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bloque de llamada al pago / candado -->
+                <div class="fase-lock-overlay mt-3 p-3.5 rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 border border-amber-500/30 text-white text-center shadow-md">
+                    <div class="flex items-center justify-center gap-1.5 text-amber-300 text-xs font-black uppercase mb-1">
+                        <i class="fa-solid fa-lock"></i> Estrategia de Puja en Vivo
+                    </div>
+                    <p class="text-[11px] text-slate-300 mb-2.5">Aprende cuándo activar la reserva de postura y cómo pujar en los últimos 5 minutos sin alertar a subasteros.</p>
+                    <button onclick="abrirModalCheckout()" class="w-full py-2 px-3 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs transition shadow flex items-center justify-center gap-1">
+                        <span>Desbloquear por 9 €/mes</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+                <div class="fase-unlocked-badge hidden mt-3 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-circle-check text-emerald-600"></i> Estrategia de Puja Desbloqueada
                 </div>
             </div>
 
-            <!-- FASE 5 -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
+            <!-- FASE 5 (VIP) -->
+            <div class="fase-vip-card relative overflow-hidden bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-amber-400 transition flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="w-10 h-10 rounded-xl bg-emerald-500 text-slate-900 font-extrabold flex items-center justify-center text-lg">5</span>
-                        <span class="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg">Si ganas</span>
+                        <span class="fase-tag-vip text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                            <i class="fa-solid fa-lock text-[10px]"></i> Solo Miembros PRO
+                        </span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">Adjudicación, Pago y Posesión</h3>
-                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                        Si tu puja es aprobada (cumpliendo los mínimos de la Ley de Enjuiciamiento Civil), el juzgado te requerirá ingresar el <strong>precio restante</strong> (tu puja menos el 5% ya depositado).
+                    <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                        Si tu puja es aprobada por cumplir los mínimos legales (art. 670 LEC), el juzgado te requerirá consignar el <strong>precio restante</strong> restando el 5% ya entregado.
                     </p>
-                    <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
-                        <li class="flex items-start gap-2">
-                            <span class="text-emerald-500 font-bold">✓</span>
-                            <span><strong>Plazo de pago:</strong> 40 días hábiles en subastas judiciales de inmuebles (20 días en ejecuciones hipotecarias y 10 días en bienes muebles).</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-emerald-500 font-bold">✓</span>
-                            <span>Recibes el <strong>Testimonio del Decreto de Adjudicación</strong> y el <strong>Mandamiento de Cancelación de Cargas</strong> (que borra la hipoteca ejecutada y deudas posteriores), inscribes a tu nombre y solicitas la posesión.</span>
-                        </li>
-                    </ul>
+
+                    <!-- Contenido detallado difuminado para no suscriptores -->
+                    <div class="fase-vip-contenido blur-xs sm:blur-[2.5px] select-none opacity-40 pointer-events-none transition-all">
+                        <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-500 font-bold">✓</span>
+                                <span><strong>Plazos estrictos:</strong> 40 días hábiles en subasta judicial de inmuebles (20 días en hipotecarias y 10 en muebles).</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-500 font-bold">✓</span>
+                                <span><strong>Decreto de Adjudicación:</strong> Mandamiento de Cancelación de Cargas para limpiar la hipoteca y pedir la posesión por el art. 675 LEC.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bloque de llamada al pago / candado -->
+                <div class="fase-lock-overlay mt-3 p-3.5 rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 border border-amber-500/30 text-white text-center shadow-md">
+                    <div class="flex items-center justify-center gap-1.5 text-amber-300 text-xs font-black uppercase mb-1">
+                        <i class="fa-solid fa-lock"></i> Protocolo de Adjudicación LEC
+                    </div>
+                    <p class="text-[11px] text-slate-300 mb-2.5">Accede a las plantillas de escrito al juzgado para pedir la posesión rápida y cancelar cargas en el Registro.</p>
+                    <button onclick="abrirModalCheckout()" class="w-full py-2 px-3 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs transition shadow flex items-center justify-center gap-1">
+                        <span>Desbloquear por 9 €/mes</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+                <div class="fase-unlocked-badge hidden mt-3 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-circle-check text-emerald-600"></i> Protocolo de Adjudicación Desbloqueado
                 </div>
             </div>
 
-            <!-- FASE 6 -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
+            <!-- FASE 6 (VIP) -->
+            <div class="fase-vip-card relative overflow-hidden bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-amber-400 transition flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="w-10 h-10 rounded-xl bg-slate-200 text-slate-800 font-extrabold flex items-center justify-center text-lg">6</span>
-                        <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg">Si no ganas</span>
+                        <span class="fase-tag-vip text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                            <i class="fa-solid fa-lock text-[10px]"></i> Solo Miembros PRO
+                        </span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 mb-2">Devolución Íntegra del Depósito</h3>
-                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                        ¿Qué pasa si alguien puja más que tú? <strong>No pierdes ni un solo euro.</strong> El dinero del depósito nunca sale de la custodia del Tesoro Público si no eres adjudicatario.
+                    <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                        ¿Qué pasa si alguien supera tu puja? <strong>No pierdes ni un euro.</strong> La fianza judicial está custodiada por el Tesoro Público y vuelve íntegra a tu cuenta.
                     </p>
-                    <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
-                        <li class="flex items-start gap-2">
-                            <span class="text-emerald-500 font-bold">✓</span>
-                            <span>Si <strong>NO marcaste</strong> reserva de postura, la orden de devolución a tu cuenta IBAN se emite automáticamente al cerrar la subasta (tarda entre 2 y 7 días hábiles).</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-emerald-500 font-bold">✓</span>
-                            <span>Si marcaste reserva de postura, se devuelve en cuanto el ganador final paga el precio completo al juzgado.</span>
-                        </li>
-                    </ul>
+
+                    <!-- Contenido detallado difuminado para no suscriptores -->
+                    <div class="fase-vip-contenido blur-xs sm:blur-[2.5px] select-none opacity-40 pointer-events-none transition-all">
+                        <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-500 font-bold">✓</span>
+                                <span>Sin reserva de postura, la devolución telemática se ordena en 2 a 7 días hábiles a tu IBAN.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-500 font-bold">✓</span>
+                                <span>Con reserva de postura, se devuelve en cuanto el adjudicatario final ingresa el resto del dinero en la cuenta del juzgado.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bloque de llamada al pago / candado -->
+                <div class="fase-lock-overlay mt-3 p-3.5 rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 border border-amber-500/30 text-white text-center shadow-md">
+                    <div class="flex items-center justify-center gap-1.5 text-amber-300 text-xs font-black uppercase mb-1">
+                        <i class="fa-solid fa-lock"></i> Seguridad y Devolución Bancaria
+                    </div>
+                    <p class="text-[11px] text-slate-300 mb-2.5">Cómo reclamar al letrado judicial si el banco retiene el NRC y cómo evitar bloqueos de liquidez.</p>
+                    <button onclick="abrirModalCheckout()" class="w-full py-2 px-3 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs transition shadow flex items-center justify-center gap-1">
+                        <span>Desbloquear por 9 €/mes</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+                <div class="fase-unlocked-badge hidden mt-3 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-circle-check text-emerald-600"></i> Protocolo de Devolución Desbloqueado
                 </div>
             </div>
         </div>
@@ -947,6 +1043,14 @@
             <p class="text-slate-600 mt-3 text-base max-w-2xl mx-auto">
                 Más de 35 preguntas reales resueltas sin rodeos para cualquier persona que empieza desde cero. Escribe una palabra clave o filtra por tema.
             </p>
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                    <i class="fa-solid fa-lock-open text-emerald-600"></i> Primeras 6 consultas en abierto
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                    <i class="fa-solid fa-lock text-amber-600"></i> 30 Respuestas Técnicas y Modelos para miembros PRO
+                </span>
+            </div>
         </div>
 
         <!-- Buscador Instantáneo -->
@@ -1036,27 +1140,31 @@
         Suscripción Mensual VIP
       </div>
 
-      <h3 class="text-xl sm:text-2xl font-black text-caza-pizarra mb-2">Desbloquea el Radar Completo</h3>
+      <h3 class="text-xl sm:text-2xl font-black text-caza-pizarra mb-2">Desbloquea el Acceso PRO</h3>
       <p class="text-xs sm:text-sm text-slate-600 mb-6">
-        Accede a las coordenadas exactas de las 6 categorías, enlaces directos al Catastro, visor Google Street View, historial de edictos y calculadora de rentabilidad.
+        Accede al radar completo, Street View, coordenadas GPS, las fases judiciales 3 a 6 y la enciclopedia práctica con las 36 FAQs completas.
       </p>
 
       <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left mb-6 space-y-2.5">
+        <div class="flex items-center gap-2.5 text-xs font-semibold text-slate-700">
+          <i class="fa-solid fa-circle-check text-emerald-500"></i>
+          <span>Fases 3 a 6 desbloqueadas: fianza, puja oculta y posesión judicial</span>
+        </div>
+        <div class="flex items-center gap-2.5 text-xs font-semibold text-slate-700">
+          <i class="fa-solid fa-circle-check text-emerald-500"></i>
+          <span>36 FAQs completas con artículos de la LEC y modelos legales</span>
+        </div>
         <div class="flex items-center gap-2.5 text-xs font-semibold text-slate-700">
           <i class="fa-solid fa-circle-check text-emerald-500"></i>
           <span>Auditoría de cargas previas y 100% Pleno Dominio</span>
         </div>
         <div class="flex items-center gap-2.5 text-xs font-semibold text-slate-700">
           <i class="fa-solid fa-circle-check text-emerald-500"></i>
-          <span>Referencia catastral y ficha oficial 1-click</span>
+          <span>Referencia catastral, enlaces BOE oficiales y Street View sin límite</span>
         </div>
         <div class="flex items-center gap-2.5 text-xs font-semibold text-slate-700">
           <i class="fa-solid fa-circle-check text-emerald-500"></i>
-          <span>Coordenadas GPS exactas y Street View sin truncar</span>
-        </div>
-        <div class="flex items-center gap-2.5 text-xs font-semibold text-slate-700">
-          <i class="fa-solid fa-circle-check text-emerald-500"></i>
-          <span>Calculadora "Tu Bolsillo" con gastos de escrituración</span>
+          <span>Calculadora "Tu Bolsillo" con liquidación de ITP por Comunidad Autónoma</span>
         </div>
       </div>
 
@@ -1074,6 +1182,10 @@
         <i class="fa-solid fa-shield-halved text-emerald-500"></i>
         <span>Pago 100% seguro con Stripe. Cancela en cualquier momento con 1 clic.</span>
       </p>
+
+      <button type="button" onclick="toggleVipDemo()" class="mt-4 text-[11px] text-slate-400 hover:text-emerald-600 font-semibold underline block mx-auto transition">
+        ⚡ ¿Quieres probar la vista VIP en modo demostración? Haz clic aquí
+      </button>
     </div>
   </div>
 
@@ -1230,7 +1342,15 @@
 
     let supabaseClient = null;
     let usuarioActual = null;
-    let suscripcionActiva = false;
+
+    // Control de Suscripción PRO / VIP (URL ?vip=1 o localStorage)
+    const urlParamsVip = new URLSearchParams(window.location.search);
+    if (urlParamsVip.get('vip') === '1' || urlParamsVip.get('vip') === 'true') {
+      localStorage.setItem('cazaofertas_vip', 'true');
+    }
+    let suscripcionActiva = localStorage.getItem('cazaofertas_vip') === 'true';
+    window.suscripcionActiva = suscripcionActiva;
+
     let todasLasSubastas = [];
     let subastasFiltradas = [];
     let categoriaActiva = 'todas';
@@ -1664,10 +1784,61 @@
       document.getElementById('modal-auth')?.classList.add('hidden');
     }
 
+    // Función unificada para activar/desactivar estado VIP en toda la web
+    function actualizarEstadoSuscripcion(activa) {
+      suscripcionActiva = activa;
+      window.suscripcionActiva = activa;
+      localStorage.setItem('cazaofertas_vip', activa ? 'true' : 'false');
+
+      // 1. Actualizar Fases 3 a 6 (Quitar/Poner Blur y Bloqueos)
+      document.querySelectorAll('.fase-vip-card').forEach(card => {
+        const contenido = card.querySelector('.fase-vip-contenido');
+        const overlay = card.querySelector('.fase-lock-overlay');
+        const badge = card.querySelector('.fase-unlocked-badge');
+        const tagVip = card.querySelector('.fase-tag-vip');
+
+        if (activa) {
+          contenido?.classList.remove('blur-xs', 'sm:blur-[2.5px]', 'select-none', 'opacity-40', 'pointer-events-none');
+          overlay?.classList.add('hidden');
+          badge?.classList.remove('hidden');
+          if (tagVip) {
+            tagVip.innerHTML = '<i class="fa-solid fa-circle-check text-[10px] text-emerald-600"></i> VIP Desbloqueado';
+            tagVip.classList.remove('bg-amber-100', 'text-amber-800');
+            tagVip.classList.add('bg-emerald-100', 'text-emerald-800');
+          }
+        } else {
+          contenido?.classList.add('blur-xs', 'sm:blur-[2.5px]', 'select-none', 'opacity-40', 'pointer-events-none');
+          overlay?.classList.remove('hidden');
+          badge?.classList.add('hidden');
+          if (tagVip) {
+            tagVip.innerHTML = '<i class="fa-solid fa-lock text-[10px]"></i> Solo Miembros PRO';
+            tagVip.classList.add('bg-amber-100', 'text-amber-800');
+            tagVip.classList.remove('bg-emerald-100', 'text-emerald-800');
+          }
+        }
+      });
+
+      // 2. Re-renderizar FAQs
+      if (typeof window.renderFaqs === 'function') {
+        window.renderFaqs();
+      }
+    }
+    window.actualizarEstadoSuscripcion = actualizarEstadoSuscripcion;
+
+    window.toggleVipDemo = function() {
+      actualizarEstadoSuscripcion(!window.suscripcionActiva);
+      const msg = window.suscripcionActiva 
+        ? '⭐ ¡Modo PRO Activado! Ahora tienes acceso completo a las 6 fases de subasta, Street View y las 36 FAQs con modelos legales.' 
+        : '🔒 Modo Visitante Activado. Las fases 3 a 6 y las FAQs técnicas vuelven a estar restringidas.';
+      alert(msg);
+      cerrarModalCheckout();
+    };
+
     // Inicialización al cargar el DOM
     document.addEventListener('DOMContentLoaded', () => {
       initMap();
       cargarDatosSubastas();
+      actualizarEstadoSuscripcion(suscripcionActiva);
     });
   </script>
 
@@ -2009,6 +2180,7 @@
 
         function renderFaqs() {
             const normQuery = normalizeText(currentQuery.trim());
+            const esVip = window.suscripcionActiva === true;
 
             const filtered = faqsData.filter(item => {
                 const matchCat = currentCategory === 'todas' || item.cat === currentCategory;
@@ -2028,26 +2200,89 @@
             }
 
             faqEmptyEl.classList.add('hidden');
-            faqListEl.innerHTML = filtered.map((item, idx) => `
-                <div class="faq-item bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition hover:border-emerald-400">
-                    <button type="button" class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between gap-4 focus:outline-none" aria-expanded="${allExpanded}">
-                        <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                            <span class="inline-block self-start px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-slate-600 shrink-0">
-                                ${item.catLabel}
-                            </span>
-                            <span class="font-bold text-slate-900 text-sm sm:text-base leading-snug">
-                                ${item.q}
-                            </span>
+            faqListEl.innerHTML = filtered.map((item, idx) => {
+                const esGratuita = item.cat === 'primeros-pasos';
+                const estaDesbloqueada = esGratuita || esVip;
+
+                // Badge de la cabecera
+                let badgeHeader = '';
+                if (esGratuita) {
+                    badgeHeader = `<span class="inline-block self-start px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 shrink-0">Gratis</span>`;
+                } else if (esVip) {
+                    badgeHeader = `<span class="inline-block self-start px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 shrink-0"><i class="fa-solid fa-star text-amber-500 mr-1"></i>PRO</span>`;
+                } else {
+                    badgeHeader = `<span class="inline-block self-start px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-200 shrink-0"><i class="fa-solid fa-lock text-amber-600 mr-1"></i>PRO</span>`;
+                }
+
+                // Contenido del panel
+                let contenidoPanel = '';
+                if (estaDesbloqueada) {
+                    contenidoPanel = `
+                        <div class="space-y-2">
+                            ${!esGratuita ? '<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase mb-1"><i class="fa-solid fa-circle-check text-emerald-600"></i> Respuesta Completa Desbloqueada</div>' : ''}
+                            <div>${item.a}</div>
                         </div>
-                        <span class="faq-icon w-8 h-8 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0 text-slate-600 transition-transform duration-200 ${allExpanded ? 'rotate-180 bg-emerald-50 text-emerald-600 border-emerald-200' : ''}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-                        </span>
-                    </button>
-                    <div class="faq-panel ${allExpanded ? '' : 'hidden'} px-6 pb-5 pt-1 text-sm text-slate-600 leading-relaxed border-t border-slate-100 bg-slate-50/50">
-                        ${item.a}
+                    `;
+                } else {
+                    // Extraer primera frase de aperitivo
+                    const partes = item.a.split('.');
+                    const preview = partes.length > 1 ? partes[0] + '.' : item.a.substring(0, 95) + '...';
+
+                    contenidoPanel = `
+                        <div>
+                            <p class="font-medium text-slate-800 mb-2">${preview}</p>
+                            
+                            <!-- Texto legal difuminado -->
+                            <div class="blur-xs sm:blur-[2.5px] select-none opacity-40 pointer-events-none text-slate-500 space-y-1 mb-3">
+                                <p>Para formalizar este trámite judicial ante el Letrado de la Administración de Justicia (art. 670 y concordantes de la LEC), se debe consignar la postura mediante mandamiento bancario...</p>
+                                <p>La calificación registral requerirá la constancia fehaciente de la firmeza del decreto de adjudicación y el testimonio íntegro con cancelación de cargas posteriores...</p>
+                            </div>
+
+                            <!-- Caja de conversión PRO -->
+                            <div class="p-3.5 rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-amber-500/30 text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
+                                <div class="flex items-center gap-2.5 text-left">
+                                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-lock text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold text-amber-300">Respuesta legal completa reservada para miembros PRO</p>
+                                        <p class="text-[11px] text-slate-300">Desbloquea los artículos de la LEC, modelos de recurso y pasos prácticos.</p>
+                                    </div>
+                                </div>
+                                <button onclick="abrirModalCheckout()" class="shrink-0 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl shadow transition whitespace-nowrap flex items-center gap-1.5">
+                                    <span>Desbloquear por 9 €/mes</span>
+                                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="faq-item bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition hover:border-emerald-400">
+                        <button type="button" class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between gap-4 focus:outline-none" aria-expanded="${allExpanded}">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                                ${badgeHeader}
+                                <span class="inline-block self-start px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-slate-600 shrink-0">
+                                    ${item.catLabel}
+                                </span>
+                                <span class="font-bold text-slate-900 text-sm sm:text-base leading-snug">
+                                    ${item.q}
+                                </span>
+                            </div>
+                            <span class="faq-icon w-8 h-8 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0 text-slate-600 transition-transform duration-200 ${allExpanded ? 'rotate-180 bg-emerald-50 text-emerald-600 border-emerald-200' : ''}">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                            </span>
+                        </button>
+                        <div class="faq-panel ${allExpanded ? '' : 'hidden'} px-6 pb-5 pt-1 text-sm text-slate-600 leading-relaxed border-t border-slate-100 bg-slate-50/50">
+                            ${contenidoPanel}
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+
+            // Asignar al objeto window para llamadas externas
+            window.renderFaqs = renderFaqs;
 
             // Añadir eventos click a cada acordeón
             document.querySelectorAll('.faq-toggle').forEach(btn => {
