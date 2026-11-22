@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CazaOfertasBOE — El radar en mapa de las mejores ofertas públicas del BOE</title>
   <meta name="description" content="El radar en mapa de las mejores ofertas públicas del BOE, filtrado por categorías y sin letra pequeña. 100% Pleno Dominio, Posesión Libre y calculadora de entrada real.">
+  <link rel="canonical" href="https://cazaofertasboe.es">
 
   <!-- Favicon SVG Nativo: Radar de Precisión + Casa en Azul Pizarra, Esmeralda y Ámbar -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230F172A'/%3E%3Cstop offset='100%25' stop-color='%231E293B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='url(%23g)'/%3E%3Ccircle cx='24' cy='24' r='16' stroke='%23334155' stroke-width='2' fill='none'/%3E%3Ccircle cx='24' cy='24' r='10' stroke='%23059669' stroke-width='1.5' stroke-dasharray='3 3' fill='none'/%3E%3Cpath d='M24 8v6M24 34v6M8 24h6M34 24h6' stroke='%23F59E0B' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M24 14l-8 7v11h16V21l-8-7z' fill='%2310B981'/%3E%3Ccircle cx='24' cy='24' r='3' fill='%23FFFFFF'/%3E%3C/svg%3E">
@@ -530,13 +531,13 @@
   <!-- ========================================================================= -->
   <script>
     // -------------------------------------------------------------------------
-    // CONFIGURACIÓN SUPABASE & STRIPE
+    // CONFIGURACIÓN SUPABASE & STRIPE (PRODUCCIÓN CAZAOFERTASBOE)
     // -------------------------------------------------------------------------
-    const SUPABASE_URL = "https://TU_PROYECTO.supabase.co";
-    const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY";
+    const SUPABASE_URL = "https://bcaieaxbkjjqykidncqh.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_ceX44ozRpJVwzGNsflPYRg_74WoJcZG";
     
-    // Stripe Checkout base URL
-    const STRIPE_CHECKOUT_BASE_URL = "https://buy.stripe.com/test_cazaofertasboe_pro";
+    // Stripe Payment Link oficial (9 €/mes)
+    const STRIPE_PAYMENT_LINK_9EUR = "https://buy.stripe.com/test_5kQcN546agdD7Ol8fs2VG00";
 
     let supabaseClient = null;
     try {
@@ -1268,18 +1269,48 @@
     }
 
     function procederPagoStripe() {
+      // Si el usuario no ha iniciado sesión, invitar a registrarse primero para vincular su cuenta automáticamente
+      if (!usuarioActual) {
+        const crearPrimero = confirm("💡 CONSEJO PRO: Para vincular tu pago al instante a tu cuenta, te recomendamos crear tu usuario antes de pagar.\n\n¿Quieres registrarte ahora con tu correo?\n(Si pulsas Cancelar, irás directo al pago seguro de Stripe igualmente)");
+        if (crearPrimero) {
+          abrirModalAuth('register');
+          cerrarModalCheckout();
+          return;
+        }
+      }
+
       const userId = usuarioActual ? usuarioActual.id : 'anon_' + Math.random().toString(36).substring(2, 9);
       const email = usuarioActual ? usuarioActual.email : '';
 
-      const stripeUrl = `${STRIPE_CHECKOUT_BASE_URL}?client_reference_id=${encodeURIComponent(userId)}&prefilled_email=${encodeURIComponent(email)}`;
+      // Enlace oficial de Stripe Payment Link con client_reference_id para el Webhook Deno
+      const stripeUrl = `${STRIPE_PAYMENT_LINK_9EUR}?client_reference_id=${encodeURIComponent(userId)}&prefilled_email=${encodeURIComponent(email)}`;
       
       console.log("Redirigiendo a Stripe Checkout:", stripeUrl);
-      
-      if (confirm("¿Deseas simular el pago completado en Stripe (9 €/mes) para activar tu perfil PRO de inmediato en este navegador?")) {
-        simularSuscripcionLocal();
-        cerrarModalCheckout();
-      } else {
-        window.open(stripeUrl, '_blank');
+      window.location.href = stripeUrl;
+    }
+
+    // Comprobación de retorno tras pago en Stripe
+    function verificarRetornoStripe() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('suscripcion') === 'activa' || urlParams.get('session_id') || urlParams.get('pago') === 'exito') {
+        const banner = document.createElement('div');
+        banner.className = "fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-2xl flex items-center gap-3 text-xs border border-emerald-400 animate-bounce";
+        banner.innerHTML = `
+          <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-amber-300 text-base">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <div>
+            <div class="text-sm font-black text-white">¡Enhorabuena! Suscripción PRO Activada</div>
+            <div class="text-[11px] font-normal text-emerald-100">La dirección exacta, Sede del Catastro, Street View 360° y Ficha Oficial BOE están ahora desbloqueados.</div>
+          </div>
+          <button onclick="this.parentElement.remove()" class="ml-3 text-white/80 hover:text-white text-base"><i class="fa-solid fa-xmark"></i></button>
+        `;
+        document.body.appendChild(banner);
+        setTimeout(() => { if (banner.parentElement) banner.remove(); }, 12000);
+
+        if (supabaseClient) {
+          verificarSesionSupabase();
+        }
       }
     }
 
@@ -1338,6 +1369,7 @@
     // Arranque
     window.addEventListener('DOMContentLoaded', () => {
       initMapa();
+      verificarRetornoStripe();
       verificarSesionSupabase();
       cargarDatos();
     });
