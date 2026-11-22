@@ -1425,9 +1425,21 @@
       return items.map((s, idx) => {
         const tasacion = Number(s.tasacion || s.Tasacion || s.valor_subasta || 0);
         const deposito = Number(s.deposito || s.deposito_minimo || Math.round(tasacion * 0.05));
-        const superficie = Number(s.superficie_m2 || s.SuperficieM2 || 0);
-        const lat = Number(s.lat || s.latitud || (40.4168 + (Math.random() - 0.5) * 4));
-        const lng = Number(s.lng || s.longitud || (-3.7038 + (Math.random() - 0.5) * 6));
+        const superficie = Number(s.superficie_m2 || s.SuperficieM2 || s.superficie || 0);
+
+        // Coordenadas reales: soporte para Supabase (lat_exacta, lat_aprox) y JSON local (lat, latitud, Latitud)
+        let latVal = s.lat_exacta ?? s.lat_aprox ?? s.lat ?? s.latitud ?? s.Latitud;
+        let lngVal = s.lng_exacta ?? s.lng_aprox ?? s.lng ?? s.longitud ?? s.Longitud;
+
+        // Asignar coordenada real válida; nunca generar aleatorias
+        const lat = (latVal !== null && latVal !== undefined && !isNaN(Number(latVal))) 
+          ? Number(latVal) 
+          : 40.4168;
+
+        const lng = (lngVal !== null && lngVal !== undefined && !isNaN(Number(lngVal))) 
+          ? Number(lngVal) 
+          : -3.7038;
+
         const categoria = (s.categoria || s.Categoria || 'Vivienda').toLowerCase();
         
         let catNormalizada = 'vivienda';
@@ -1436,14 +1448,23 @@
         else if (categoria.includes('suelo') || categoria.includes('rústic') || categoria.includes('finca')) catNormalizada = 'suelo';
         else if (categoria.includes('veh') || categoria.includes('coche')) catNormalizada = 'vehiculo';
 
+        const localidad = s.municipio || s.Municipio || s.localidad || s.Localidad || '';
+        const provincia = s.provincia || s.Provincia || '';
+        const tipoTexto = s.subtipo_bien || s.SubtipoBien || s.tipo_bien || s.Categoria || 'Inmueble';
+
+        let titulo = s.titulo || s.Descripcion;
+        if (!titulo) {
+          titulo = localidad ? `${tipoTexto} en ${localidad}` : (provincia ? `${tipoTexto} en ${provincia}` : `${tipoTexto} en subasta pública`);
+        }
+
         return {
           id: s.id || s.IdSubastaLote || s.IdSubasta || `SUB-${idx}`,
           idSub: s.id_subasta || s.IdSubasta || '',
-          titulo: s.titulo || s.Descripcion || `${s.Categoria || 'Inmueble'} en subasta pública`,
+          titulo: titulo,
           categoria: catNormalizada,
-          tipoTexto: s.tipo_bien || s.SubtipoBien || s.Categoria || 'Inmueble',
-          localidad: s.localidad || s.Localidad || 'España',
-          provincia: s.provincia || s.Provincia || '',
+          tipoTexto: tipoTexto,
+          localidad: localidad || provincia || 'España',
+          provincia: provincia,
           tasacion: tasacion,
           deposito: deposito,
           superficie: superficie,
@@ -1604,7 +1625,7 @@
             </div>
 
             <div class="flex items-center justify-between pt-1 gap-2">
-              <button onclick="centrarEnMapa(${s.lat}, ${s.lng})" 
+              <button onclick="centrarEnMapa(${s.lat}, ${s.lng}, '${s.id}')" 
                       class="flex-1 py-1.5 px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition flex items-center justify-center gap-1">
                 <i class="fa-solid fa-location-crosshairs text-emerald-600"></i>
                 <span>Ver en mapa</span>
@@ -1622,9 +1643,12 @@
       contenedor.innerHTML = html;
     }
 
+    let markersMap = {};
+
     function renderizarMapa() {
       if (!markersCluster) return;
       markersCluster.clearLayers();
+      markersMap = {};
 
       subastasFiltradas.forEach(s => {
         if (!s.lat || !s.lng) return;
@@ -1642,6 +1666,7 @@
         });
 
         const marker = L.marker([s.lat, s.lng], { icon: icon });
+        markersMap[s.id] = marker;
 
         const popupContent = `
           <div class="p-3.5 font-sans">
@@ -1681,7 +1706,7 @@
       });
     }
 
-    function centrarEnMapa(lat, lng) {
+    function centrarEnMapa(lat, lng, id) {
       if (!window.cazaMap) return;
       
       // En móvil, cambiar automáticamente a la pestaña de mapa
@@ -1689,7 +1714,13 @@
         setVistaMovil('mapa');
       }
 
-      window.cazaMap.setView([lat, lng], 14, { animate: true });
+      if (id && markersMap[id] && markersCluster) {
+        markersCluster.zoomToShowLayer(markersMap[id], () => {
+          markersMap[id].openPopup();
+        });
+      } else {
+        window.cazaMap.setView([lat, lng], 14, { animate: true });
+      }
 
       // Desplazamiento suave al contenedor del mapa
       document.getElementById('mapa-radar')?.scrollIntoView({ behavior: 'smooth' });
