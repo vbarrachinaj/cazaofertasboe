@@ -169,10 +169,14 @@
               Iniciar Sesión
             </button>
             <button onclick="abrirModalCheckout()" 
-                    class="bg-gradient-to-r from-caza-verde to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white text-xs font-bold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-1.5">
+                    class="btn-acceso-pro bg-gradient-to-r from-caza-verde to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white text-xs font-bold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-1.5">
               <i class="fa-solid fa-crosshairs text-amber-300 text-xs"></i>
               <span>Acceso PRO <span class="hidden sm:inline">(9 €/mes)</span></span>
             </button>
+            <div id="btn-pro-activo" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black text-xs shadow-sm">
+              <i class="fa-solid fa-crown text-amber-900"></i>
+              <span>Plan PRO Activo</span>
+            </div>
           </div>
 
           <!-- Usuario Autenticado -->
@@ -1343,9 +1347,18 @@
     let supabaseClient = null;
     let usuarioActual = null;
 
-    // Control de Suscripción PRO / VIP (URL ?vip=1 o localStorage)
+    // Detector Universal de Suscripción PRO / VIP (?suscripcion=activa, ?vip=1, ?status=success, etc.)
     const urlParamsVip = new URLSearchParams(window.location.search);
-    if (urlParamsVip.get('vip') === '1' || urlParamsVip.get('vip') === 'true') {
+    const esParamVip = urlParamsVip.get('suscripcion') === 'activa' || 
+                       urlParamsVip.get('suscripcion') === 'true' || 
+                       urlParamsVip.get('suscripcion') === '1' || 
+                       urlParamsVip.get('vip') === '1' || 
+                       urlParamsVip.get('vip') === 'true' || 
+                       urlParamsVip.get('pro') === '1' || 
+                       urlParamsVip.get('status') === 'success' ||
+                       urlParamsVip.has('session_id');
+
+    if (esParamVip) {
       localStorage.setItem('cazaofertas_vip', 'true');
     }
     let suscripcionActiva = localStorage.getItem('cazaofertas_vip') === 'true';
@@ -1724,12 +1737,12 @@
               <i class="fa-solid fa-lock text-amber-500"></i>
               <span>Datos Registrales y Enlaces Oficiales</span>
             </span>
-            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full ${suscripcionActiva ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-              ${suscripcionActiva ? 'VIP Desbloqueado' : 'Solo Suscriptores PRO'}
+            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full ${window.suscripcionActiva ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+              ${window.suscripcionActiva ? 'VIP Desbloqueado' : 'Solo Suscriptores PRO'}
             </span>
           </div>
 
-          ${suscripcionActiva ? `
+          ${window.suscripcionActiva ? `
             <div class="space-y-2 text-xs">
               <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-900">
                 <strong>Referencia Catastral:</strong> Disponible en ficha de Catastro vinculada.
@@ -1789,6 +1802,21 @@
       suscripcionActiva = activa;
       window.suscripcionActiva = activa;
       localStorage.setItem('cazaofertas_vip', activa ? 'true' : 'false');
+
+      // Actualizar botones de cabecera
+      const btnProHeader = document.querySelector('.btn-acceso-pro');
+      const badgeProHeader = document.getElementById('btn-pro-activo');
+      if (btnProHeader && badgeProHeader) {
+        if (activa) {
+          btnProHeader.classList.add('hidden');
+          badgeProHeader.classList.remove('hidden');
+          badgeProHeader.classList.add('inline-flex');
+        } else {
+          btnProHeader.classList.remove('hidden');
+          badgeProHeader.classList.add('hidden');
+          badgeProHeader.classList.remove('inline-flex');
+        }
+      }
 
       // 1. Actualizar Fases 3 a 6 (Quitar/Poner Blur y Bloqueos)
       document.querySelectorAll('.fase-vip-card').forEach(card => {
