@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CazaOfertasBOE — El radar en mapa de las mejores ofertas públicas del BOE</title>
-  <meta name="description" content="El radar en mapa de las mejores ofertas públicas del BOE, filtrado por categorías y sin letra pequeña. 100% Pleno Dominio, Posesión Libre y calculadora de entrada real.">
+  <meta name="description" content="El radar en mapa de las mejores ofertas públicas del BOE, filtrado por categorías y sin letra pequeña. 100% Pleno Dominio, Posesión Libre y guía definitiva con calculadora real.">
   <link rel="canonical" href="https://cazaofertasboe.es">
 
   <!-- Favicon SVG Nativo: Radar de Precisión + Casa en Azul Pizarra, Esmeralda y Ámbar -->
@@ -104,30 +104,30 @@
     .custom-scrollbar::-webkit-scrollbar-track { background: #F1F5F9; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+    
+    /* Ocultar barra de desplazamiento en menús horizontales */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 
-<body class="bg-caza-fondo text-slate-800 font-sans h-full flex flex-col antialiased">
+<body class="bg-caza-fondo text-slate-800 font-sans antialiased selection:bg-emerald-500 selection:text-white">
 
   <!-- ========================================================================= -->
-  <!-- 1. CABECERA: IDENTIDAD CAZAOFERTASBOE + USUARIO & TELEGRAM -->
+  <!-- 1. CABECERA: IDENTIDAD CAZAOFERTASBOE + NAVEGACIÓN COMPLETA & USUARIO -->
   <!-- ========================================================================= -->
   <header class="bg-white border-b border-caza-borde sticky top-0 z-40 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         
         <!-- Logo SVG Propio CazaOfertasBOE (Radar de Precisión + Pin Hogar) -->
-        <a href="index.html" class="flex items-center gap-3 group focus:outline-none">
+        <a href="#inicio" class="flex items-center gap-3 group focus:outline-none">
           <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-caza-pizarra to-caza-slate p-2 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
             <svg class="w-full h-full" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Radar exterior -->
               <circle cx="18" cy="18" r="14" stroke="#334155" stroke-width="1.8"/>
               <circle cx="18" cy="18" r="9" stroke="#059669" stroke-width="1.2" stroke-dasharray="2.5 2.5"/>
-              <!-- Mirilla Ámbar -->
               <path d="M18 2V7M18 29V34M2 18H7M29 18H34" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
-              <!-- Silueta Inmueble Esmeralda -->
               <path d="M18 10L9 17V26H27V17L18 10Z" fill="#10B981"/>
-              <!-- Núcleo de precisión Blanco -->
               <circle cx="18" cy="19" r="2.5" fill="#FFFFFF"/>
             </svg>
           </div>
@@ -136,9 +136,22 @@
               <span class="text-xl font-black text-caza-pizarra tracking-tight">Caza<span class="text-caza-verde font-extrabold">Ofertas</span><span class="text-amber-500 font-black">BOE</span></span>
               <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Verificado</span>
             </div>
-            <p class="text-[11px] text-slate-500 font-medium hidden sm:block">El radar de ofertas públicas del BOE, filtrado por categorías y sin letra pequeña</p>
+            <p class="text-[11px] text-slate-500 font-medium hidden sm:block">El radar de ofertas públicas del BOE y manual oficial de compra</p>
           </div>
         </a>
+
+        <!-- Menú de Secciones Rápido (Desktop) -->
+        <nav class="hidden xl:flex items-center space-x-1 text-xs font-semibold text-slate-600">
+          <a href="#mapa-radar" class="px-3 py-1.5 rounded-xl hover:text-emerald-700 hover:bg-slate-100 transition">🎯 Radar en Mapa</a>
+          <a href="#fases" class="px-3 py-1.5 rounded-xl hover:text-emerald-700 hover:bg-slate-100 transition">🚀 6 Pasos para Entrar</a>
+          <a href="#calculadora-gastos" class="px-3 py-1.5 rounded-xl hover:text-emerald-700 hover:bg-slate-100 transition">🧮 Calculadora Real</a>
+          <a href="#riesgos" class="px-3 py-1.5 rounded-xl hover:text-emerald-700 hover:bg-slate-100 transition">🛡️ Cargas y Riesgos</a>
+          <a href="#estrategias" class="px-3 py-1.5 rounded-xl hover:text-emerald-700 hover:bg-slate-100 transition">💡 5 Estrategias</a>
+          <a href="#faq" class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition flex items-center gap-1">
+            <span>FAQ Oficial</span>
+            <span class="bg-emerald-600 text-white text-[10px] px-1.5 py-0.2 rounded-full font-bold">36</span>
+          </a>
+        </nav>
 
         <!-- Acciones Cabecera: Canal Telegram + Login / Acceso PRO -->
         <div class="flex items-center gap-2 sm:gap-3">
@@ -183,70 +196,113 @@
       </div>
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- 2. SELECTOR MULTI-CATEGORÍA INTELIGENTE (6 CATEGORÍAS EN MAPA) -->
-    <!-- ========================================================================= -->
-    <div class="bg-slate-50 border-t border-caza-borde overflow-x-auto custom-scrollbar py-2 px-4 sm:px-6">
-      <div class="max-w-7xl mx-auto flex items-center gap-2">
-        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1 hidden lg:inline">Categoría:</span>
-        <button onclick="filtrarCategoria('Todas')" data-cat="Todas" class="cat-pill active flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-caza-pizarra text-white transition-all whitespace-nowrap">
-          <i class="fa-solid fa-layer-group text-[11px]"></i>
-          <span>Todas (<span id="count-todas">0</span>)</span>
-        </button>
-        <button onclick="filtrarCategoria('Vivienda')" data-cat="Vivienda" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
-          <i class="fa-solid fa-house text-emerald-500 text-[11px]"></i>
-          <span>🏠 Viviendas (<span id="count-vivienda">0</span>)</span>
-        </button>
-        <button onclick="filtrarCategoria('Garaje y Trastero')" data-cat="Garaje y Trastero" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
-          <i class="fa-solid fa-car text-blue-500 text-[11px]"></i>
-          <span>🚗 Garajes y Trasteros (<span id="count-garaje">0</span>)</span>
-        </button>
-        <button onclick="filtrarCategoria('Local y Nave')" data-cat="Local y Nave" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
-          <i class="fa-solid fa-building text-purple-500 text-[11px]"></i>
-          <span>🏢 Locales y Naves (<span id="count-local">0</span>)</span>
-        </button>
-        <button onclick="filtrarCategoria('Suelo y Rústica')" data-cat="Suelo y Rústica" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
-          <i class="fa-solid fa-wheat-awn text-amber-600 text-[11px]"></i>
-          <span>🌾 Suelos y Rústicas (<span id="count-suelo">0</span>)</span>
-        </button>
-        <button onclick="filtrarCategoria('Vehículo')" data-cat="Vehículo" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
-          <i class="fa-solid fa-truck text-red-500 text-[11px]"></i>
-          <span>🚙 Vehículos (<span id="count-vehiculo">0</span>)</span>
-        </button>
+    <!-- Menú móvil con acceso a secciones -->
+    <div class="xl:hidden bg-slate-900 text-slate-300 border-t border-slate-800 overflow-x-auto no-scrollbar py-2 px-4">
+      <div class="flex items-center space-x-4 text-xs font-medium whitespace-nowrap">
+        <a href="#mapa-radar" class="text-emerald-400 font-bold">🎯 Radar en Mapa</a>
+        <a href="#fases" class="text-slate-300 hover:text-white">🚀 6 Pasos para Entrar</a>
+        <a href="#calculadora-gastos" class="text-amber-400 font-semibold hover:text-amber-300">🧮 Calculadora Gastos</a>
+        <a href="#riesgos" class="text-slate-300 hover:text-white">🛡️ Cargas y Riesgos</a>
+        <a href="#estrategias" class="text-slate-300 hover:text-white">💡 5 Estrategias</a>
+        <a href="#faq" class="text-emerald-400 font-bold">❓ FAQ (36+)</a>
       </div>
     </div>
   </header>
 
   <!-- ========================================================================= -->
-  <!-- 3. BANNER "¿POR QUÉ CAZAOFERTASBOE ES DIFERENTE?" (AUDITORÍA & CONFIANZA) -->
+  <!-- 2. HERO / ONBOARDING INMEDIATO: GENERADOR DE MÁXIMA CONFIANZA -->
   <!-- ========================================================================= -->
-  <section class="bg-gradient-to-r from-slate-900 via-caza-pizarra to-slate-900 text-white py-3 px-4 sm:px-6 shadow-inner">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
-      <div class="flex items-center gap-2">
-        <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
-          <i class="fa-solid fa-crosshairs"></i>
-        </span>
-        <span class="font-bold text-white">¿Por qué CazaOfertasBOE es diferente?</span>
-        <span class="text-slate-300 hidden sm:inline">— Filtramos el 85% de las subastas con trampas jurídicas:</span>
+  <section id="inicio" class="relative bg-gradient-to-b from-slate-900 via-caza-pizarra to-slate-900 text-white overflow-hidden py-10 lg:py-14 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold mb-4">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Plataforma Oficial & Academia para Compradores · Actualizado 2026 (LEC y Ley de Eficiencia)</span>
+        </div>
+
+        <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight mb-4">
+          Comprar en subastas públicas del BOE es <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-amber-400">100% online, legal y accesible</span> para cualquier persona
+        </h1>
+
+        <p class="text-sm sm:text-base text-slate-300 leading-relaxed mb-6">
+          Sin tecnicismos de juzgado ni letra pequeña. En <strong>CazaOfertasBOE</strong> auditamos las subastas de toda España, filtramos el 85% de las propiedades con cargas ocultas y te mostramos en un mapa interactivo solo las oportunidades limpias con fianza 100% recuperable.
+        </p>
+
+        <!-- Botones de Acción Directa -->
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="#mapa-radar" class="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-500/20 transition-all flex items-center gap-2">
+            <span>🎯 Explorar Radar en Mapa</span>
+            <i class="fa-solid fa-arrow-down text-xs"></i>
+          </a>
+          <a href="#fases" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 text-xs sm:text-sm font-semibold transition-all flex items-center gap-2">
+            <i class="fa-solid fa-book-open text-emerald-400"></i>
+            <span>Ver 6 Pasos para Entrar</span>
+          </a>
+          <a href="#calculadora-gastos" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 text-xs sm:text-sm font-semibold transition-all flex items-center gap-2">
+            <i class="fa-solid fa-calculator text-amber-400"></i>
+            <span>Calculadora Gastos CCAA</span>
+          </a>
+          <a href="#faq" class="px-4 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-question"></i>
+            <span>FAQ Oficial (36+)</span>
+          </a>
+        </div>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[11px]">
-        <div class="flex items-center gap-1.5 text-slate-200">
-          <i class="fa-solid fa-circle-check text-emerald-400"></i>
-          <span>100% Pleno Dominio</span>
+
+      <!-- 4 Puntos Clave que Generan Confianza Inmediata -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-8 pt-8 border-t border-slate-800">
+        <div class="bg-slate-800/70 p-3.5 sm:p-4 rounded-2xl border border-slate-700/80">
+          <div class="text-emerald-400 font-black text-xl sm:text-2xl">100% Online</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1">Todo el proceso se realiza desde casa en <strong>subastas.boe.es</strong> sin pisar un juzgado.</div>
         </div>
-        <div class="flex items-center gap-1.5 text-slate-200">
-          <i class="fa-solid fa-circle-check text-emerald-400"></i>
-          <span>Posesión Libre</span>
+        <div class="bg-slate-800/70 p-3.5 sm:p-4 rounded-2xl border border-slate-700/80">
+          <div class="text-amber-400 font-black text-xl sm:text-2xl">5% o 1.000 €</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1">Fianza legal previa (se devuelve íntegra y automáticamente a tu banco si no ganas).</div>
         </div>
-        <div class="flex items-center gap-1.5 text-slate-200">
-          <i class="fa-solid fa-circle-check text-emerald-400"></i>
-          <span>Calculadora Tu Bolsillo</span>
+        <div class="bg-slate-800/70 p-3.5 sm:p-4 rounded-2xl border border-slate-700/80">
+          <div class="text-emerald-400 font-black text-xl sm:text-2xl">20 Días</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1">Plazo natural en que la subasta está abierta para estudiar edictos y pujar.</div>
         </div>
-        <div class="flex items-center gap-1.5 text-slate-200">
-          <i class="fa-solid fa-circle-check text-emerald-400"></i>
-          <span>Bien Verificado</span>
+        <div class="bg-slate-800/70 p-3.5 sm:p-4 rounded-2xl border border-slate-700/80">
+          <div class="text-amber-400 font-black text-xl sm:text-2xl">20 a 40 Días</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1">Plazo hábil tras ganar para pagar el resto e inscribir la propiedad a tu nombre.</div>
         </div>
       </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 3. SELECTOR MULTI-CATEGORÍA DEL RADAR (6 CATEGORÍAS) -->
+  <!-- ========================================================================= -->
+  <section class="bg-slate-100 border-b border-caza-borde overflow-x-auto custom-scrollbar py-2.5 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto flex items-center gap-2">
+      <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mr-1 hidden sm:inline">Filtrar Mapa:</span>
+      <button onclick="filtrarCategoria('Todas')" data-cat="Todas" class="cat-pill active flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-caza-pizarra text-white transition-all whitespace-nowrap">
+        <i class="fa-solid fa-layer-group text-[11px]"></i>
+        <span>Todas (<span id="count-todas">0</span>)</span>
+      </button>
+      <button onclick="filtrarCategoria('Vivienda')" data-cat="Vivienda" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
+        <i class="fa-solid fa-house text-emerald-500 text-[11px]"></i>
+        <span>🏠 Viviendas (<span id="count-vivienda">0</span>)</span>
+      </button>
+      <button onclick="filtrarCategoria('Garaje y Trastero')" data-cat="Garaje y Trastero" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
+        <i class="fa-solid fa-car text-blue-500 text-[11px]"></i>
+        <span>🚗 Garajes y Trasteros (<span id="count-garaje">0</span>)</span>
+      </button>
+      <button onclick="filtrarCategoria('Local y Nave')" data-cat="Local y Nave" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
+        <i class="fa-solid fa-building text-purple-500 text-[11px]"></i>
+        <span>🏢 Locales y Naves (<span id="count-local">0</span>)</span>
+      </button>
+      <button onclick="filtrarCategoria('Suelo y Rústica')" data-cat="Suelo y Rústica" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
+        <i class="fa-solid fa-wheat-awn text-amber-600 text-[11px]"></i>
+        <span>🌾 Suelos y Rústicas (<span id="count-suelo">0</span>)</span>
+      </button>
+      <button onclick="filtrarCategoria('Vehículo')" data-cat="Vehículo" class="cat-pill flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all whitespace-nowrap">
+        <i class="fa-solid fa-truck text-red-500 text-[11px]"></i>
+        <span>🚙 Vehículos (<span id="count-vehiculo">0</span>)</span>
+      </button>
     </div>
   </section>
 
@@ -275,78 +331,640 @@
   </section>
 
   <!-- ========================================================================= -->
-  <!-- 5. ÁREA SPLIT-SCREEN (LISTADO CON CALCULADORA "TU BOLSILLO" + MAPA) -->
+  <!-- 5. SECCIÓN RADAR: MAPA LEAFLET + LISTADO CON CALCULADORA "TU BOLSILLO" -->
   <!-- ========================================================================= -->
-  <main class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
+  <section id="mapa-radar" class="border-b border-caza-borde bg-white">
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row h-[780px] lg:h-[720px] relative">
 
-    <!-- PANEL IZQUIERDO: Buscador, Filtros y Fichas con Calculadora (430px en Desktop) -->
-    <aside class="w-full lg:w-[430px] xl:w-[470px] bg-white border-r border-caza-borde flex flex-col h-full z-20 shadow-md">
+      <!-- PANEL IZQUIERDO: Buscador, Filtros y Fichas con Calculadora "Tu Bolsillo" (430px) -->
+      <aside class="w-full lg:w-[430px] xl:w-[470px] bg-white border-r border-caza-borde flex flex-col h-[350px] lg:h-full z-20 shadow-md">
+        
+        <!-- Controles de Búsqueda y Filtro de Precio -->
+        <div class="p-3 border-b border-caza-borde bg-white space-y-2">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="text" id="input-busqueda" placeholder="Buscar por provincia, municipio o tipo..." 
+                   oninput="aplicarFiltros()"
+                   class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all">
+            <button onclick="limpiarBusqueda()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <select id="select-precio-max" onchange="aplicarFiltros()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-emerald-500">
+              <option value="999999999">Tasación: Todas</option>
+              <option value="50000">Hasta 50.000 €</option>
+              <option value="100000">Hasta 100.000 €</option>
+              <option value="150000">Hasta 150.000 €</option>
+              <option value="250000">Hasta 250.000 €</option>
+            </select>
+
+            <select id="select-orden" onchange="aplicarFiltros()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-emerald-500">
+              <option value="recientes">Más recientes</option>
+              <option value="tasacion_asc">Menor tasación</option>
+              <option value="tasacion_desc">Mayor tasación</option>
+              <option value="deposito_asc">Menor depósito (5%)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Listado de Oportunidades con Scroll Independiente -->
+        <div id="lista-subastas" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-3">
+          <!-- Tarjetas dinámicas inyectadas vía JS -->
+        </div>
+
+      </aside>
+
+      <!-- PANEL DERECHO: Mapa Cartográfico Leaflet.js de España -->
+      <div class="flex-1 h-[430px] lg:h-full relative">
+        <div id="map"></div>
+
+        <!-- Botón Flotante para recentrar mapa en España -->
+        <button onclick="recentrarMapa()" 
+                class="absolute top-4 right-4 z-[400] bg-white hover:bg-slate-50 text-slate-700 p-2.5 rounded-xl shadow-lg border border-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-transform active:scale-95" 
+                title="Centrar en España">
+          <i class="fa-solid fa-crosshairs text-emerald-600"></i>
+          <span class="hidden sm:inline">Centrar España</span>
+        </button>
+
+        <!-- Badge de Estado de Blindaje Anti-Copia en Vivo -->
+        <div class="absolute bottom-4 left-4 z-[400] bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-slate-200 max-w-xs text-xs">
+          <div class="flex items-center gap-2 mb-1">
+            <span id="shield-indicator" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+            <span id="shield-title" class="font-bold text-slate-900">Seguridad Anti-Copia Activa</span>
+          </div>
+          <p id="shield-desc" class="text-[11px] text-slate-500 leading-snug">
+            Las coordenadas están aproximadas en el mapa público. Inicia sesión como <strong class="text-emerald-700">Suscriptor PRO</strong> para desbloquear la ubicación y ficha catastral milimétrica.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 6. SECCIÓN MANUAL: LAS 6 FASES CRONOLÓGICAS (CÓMO FUNCIONA UNA SUBASTA) -->
+  <!-- ========================================================================= -->
+  <section id="fases" class="py-16 lg:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-caza-borde">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="text-emerald-700 font-bold text-xs uppercase tracking-wider bg-emerald-100 px-3 py-1 rounded-full">Guía Oficial Paso a Paso</span>
+      <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 mt-3">¿Cómo funciona una subasta del BOE de principio a fin?</h2>
+      <p class="text-slate-600 mt-3 text-sm sm:text-base">Cualquier ciudadano mayor de edad puede participar sin necesidad de abogado ni procurador. Este es el recorrido exacto en 6 fases claras.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       
-      <!-- Controles de Búsqueda y Filtro de Precio -->
-      <div class="p-3.5 border-b border-caza-borde bg-white space-y-2.5">
-        <div class="relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-          <input type="text" id="input-busqueda" placeholder="Buscar por provincia, municipio o tipo..." 
-                 oninput="aplicarFiltros()"
-                 class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all">
-          <button onclick="limpiarBusqueda()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <select id="select-precio-max" onchange="aplicarFiltros()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-emerald-500">
-            <option value="999999999">Tasación: Todas</option>
-            <option value="50000">Hasta 50.000 €</option>
-            <option value="100000">Hasta 100.000 €</option>
-            <option value="150000">Hasta 150.000 €</option>
-            <option value="250000">Hasta 250.000 €</option>
-          </select>
-
-          <select id="select-orden" onchange="aplicarFiltros()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-emerald-500">
-            <option value="recientes">Más recientes</option>
-            <option value="tasacion_asc">Menor tasación</option>
-            <option value="tasacion_desc">Mayor tasación</option>
-            <option value="deposito_asc">Menor depósito (5%)</option>
-          </select>
+      <!-- FASE 1 -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-xl bg-slate-900 text-emerald-400 font-extrabold flex items-center justify-center text-lg">1</span>
+            <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">Antes de empezar</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2">Preparación e Identidad Digital</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+            Para entrar y pujar necesitas acreditar quién eres ante el Estado. Debes tener instalado en tu navegador el <strong>Certificado Digital (FNMT)</strong>, DNI electrónico activo o <strong>Cl@ve Permanente</strong>.
+          </p>
+          <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span>Regístrate gratis en <strong>subastas.boe.es</strong> con tus datos fiscales y cuenta bancaria IBAN española a tu nombre.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span>Instala la aplicación <strong>AutoFirma</strong> en tu ordenador para firmar telemáticamente pujas y depósitos.</span>
+            </li>
+          </ul>
         </div>
       </div>
 
-      <!-- Listado de Oportunidades con Scroll Independiente -->
-      <div id="lista-subastas" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-3">
-        <!-- Tarjetas dinámicas inyectadas vía JS -->
+      <!-- FASE 2 -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-xl bg-slate-900 text-emerald-400 font-extrabold flex items-center justify-center text-lg">2</span>
+            <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">Investigación</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2">Análisis del Bien y Cargas</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+            Nunca pujes solo mirando el precio. Descarga el <strong>Edicto</strong> y la <strong>Certificación de Cargas</strong> de la pestaña "Documentos" del BOE, y pide una <strong>Nota Simple</strong> actualizada en el Registro de la Propiedad (~9 €).
+          </p>
+          <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span>Verifica que se subasta el <strong>100% del Pleno Dominio</strong> (evita indivisos del 50% o nuda propiedad).</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span>Comprueba si existen <strong>cargas anteriores</strong> (hipotecas previas que tú asumirías) y la situación posesoria.</span>
+            </li>
+          </ul>
+        </div>
       </div>
 
-    </aside>
-
-    <!-- PANEL DERECHO: Mapa Cartográfico Leaflet.js de España -->
-    <section class="flex-1 h-[450px] lg:h-auto relative">
-      <div id="map"></div>
-
-      <!-- Botón Flotante para recentrar mapa en España -->
-      <button onclick="recentrarMapa()" 
-              class="absolute top-4 right-4 z-[400] bg-white hover:bg-slate-50 text-slate-700 p-2.5 rounded-xl shadow-lg border border-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-transform active:scale-95" 
-              title="Centrar en España">
-        <i class="fa-solid fa-crosshairs text-emerald-600"></i>
-        <span class="hidden sm:inline">Centrar España</span>
-      </button>
-
-      <!-- Badge de Estado de Blindaje Anti-Copia en Vivo -->
-      <div class="absolute bottom-4 left-4 z-[400] bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-slate-200 max-w-xs text-xs">
-        <div class="flex items-center gap-2 mb-1">
-          <span id="shield-indicator" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
-          <span id="shield-title" class="font-bold text-slate-900">Seguridad Anti-Copia Activa</span>
+      <!-- FASE 3 -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-xl bg-slate-900 text-amber-400 font-extrabold flex items-center justify-center text-lg">3</span>
+            <span class="text-xs font-semibold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-lg">Paso Obligatorio</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2">Constitución del Depósito (NRC)</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+            Para que el portal te habilite el botón de puja, debes ingresar una fianza legal de solvencia: normalmente el <strong>5% del valor de subasta</strong> (o un importe fijo como 1.000 € en bienes muebles según la Ley de Eficiencia).
+          </p>
+          <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 font-bold">✓</span>
+              <span>El abono se realiza telemáticamente a través de la <strong>Agencia Tributaria (AEAT)</strong> con cargo en cuenta o tarjeta.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 font-bold">✓</span>
+              <span>Al instante se genera tu código de 22 caracteres <strong>NRC</strong> y puedes pujar.</span>
+            </li>
+          </ul>
         </div>
-        <p id="shield-desc" class="text-[11px] text-slate-500 leading-snug">
-          Las coordenadas están aproximadas en el mapa público. Inicia sesión como <strong class="text-emerald-700">Suscriptor PRO</strong> para desbloquear la ubicación y ficha catastral milimétrica.
+      </div>
+
+      <!-- FASE 4 -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-xl bg-slate-900 text-emerald-400 font-extrabold flex items-center justify-center text-lg">4</span>
+            <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">20 Días Naturales</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2">La Puja en el Portal del BOE</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+            Las subastas duran <strong>20 días naturales</strong>. Puedes ofertar por tramos prefijados o configurar una <strong>puja máxima automática</strong> (el sistema pujará lo justo para superar a otros postores hasta tu límite).
+          </p>
+          <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span><strong>Reserva de postura:</strong> Marca esta casilla para que retengan tu fianza por si el ganador final no paga (pasando a ser tuyo).</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span><strong>Cierre transparente:</strong> En subastas clásicas hay prórroga si pujan al final; en la nueva Ley de Eficiencia son secretas a hora fija.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- FASE 5 -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-xl bg-emerald-500 text-slate-900 font-extrabold flex items-center justify-center text-lg">5</span>
+            <span class="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg">Si ganas</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2">Adjudicación, Pago y Posesión</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+            Si tu puja es aprobada por el juzgado, te requerirán ingresar el <strong>precio restante</strong> (tu puja total menos el depósito del 5% ya consignado).
+          </p>
+          <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span><strong>Plazo para abonar:</strong> 40 días hábiles en inmuebles ordinarios (20 días en hipotecarias y 10 días en vehículos/muebles).</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span>Recibes el <strong>Testimonio del Decreto de Adjudicación</strong> y el <strong>Mandamiento de Cancelación de Cargas</strong> (que borra la hipoteca del anterior dueño).</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- FASE 6 -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-emerald-500 transition flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-xl bg-slate-200 text-slate-800 font-extrabold flex items-center justify-center text-lg">6</span>
+            <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg">Si no ganas</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2">Devolución Íntegra del Depósito</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+            ¿Qué ocurre si alguien puja más que tú? <strong>No pierdes ni un solo euro.</strong> El dinero del depósito permanece en la cuenta oficial del Tesoro Público y no se transfiere si no eres adjudicatario.
+          </p>
+          <ul class="text-xs text-slate-600 space-y-2 border-t border-slate-100 pt-3">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span>Si <strong>NO marcaste</strong> reserva de postura, la devolución a tu cuenta IBAN se emite automáticamente al cerrar (tarda de 2 a 7 días hábiles).</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span>Si marcaste reserva de postura, se devuelve en cuanto el adjudicatario principal liquida el precio en el juzgado.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 7. SECCIÓN CALCULADORA AVANZADA: PLANIFICACIÓN FINANCIERA CCAA & DEUDAS -->
+  <!-- ========================================================================= -->
+  <section id="calculadora-gastos" class="py-16 lg:py-20 bg-slate-900 text-white border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-10">
+        <span class="text-amber-400 font-bold text-xs uppercase tracking-wider bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">Calculadora Oficial</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold mt-3">Calculadora Financiera Real de Subasta BOE</h2>
+        <p class="text-slate-300 mt-2 text-sm sm:text-base">
+          El error del novato es pensar que si un piso sale por 70.000 €, solo necesita 70.000 €. Conoce al céntimo la liquidez previa que debes tener para el depósito, el ITP según tu Comunidad Autónoma y las posibles deudas de IBI o comunidad.
         </p>
       </div>
-    </section>
 
-  </main>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- PANEL CALCULADORA INTERACTIVA -->
+        <div class="lg:col-span-7 bg-slate-800 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-xl">
+          <div class="flex items-center justify-between border-b border-slate-700 pb-4 mb-6">
+            <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-calculator text-emerald-400"></i>
+              <span>Simulador de Coste Llave en Mano</span>
+            </h3>
+            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-md font-semibold">Cálculo en vivo</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Valor Subasta -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Valor de Subasta BOE (€)</label>
+              <input type="number" id="calc-valor-subasta" value="95000" min="100" step="500"
+                     class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white font-bold text-sm focus:outline-none focus:border-emerald-500 transition">
+              <span class="text-[11px] text-slate-400 mt-1 block">Base oficial del depósito legal del 5%.</span>
+            </div>
+
+            <!-- Puja Estimada -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Tu Puja Ganadora Estimada (€)</label>
+              <input type="number" id="calc-puja" value="66500" min="100" step="500"
+                     class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-emerald-400 font-bold text-sm focus:outline-none focus:border-emerald-500 transition">
+              <span class="text-[11px] text-slate-400 mt-1 block">Ejemplo: 70% del valor de subasta.</span>
+            </div>
+
+            <!-- Tipo de Bien -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Tipo de Bien y Fianza</label>
+              <select id="calc-tipo-bien" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-emerald-500">
+                <option value="inmueble_5">Inmueble estándar (Depósito 5%)</option>
+                <option value="fijo_1000">Bien Mueble / Garaje Ley Eficiencia (Fijo 1.000 €)</option>
+                <option value="vehiculo_4">Vehículo / Maquinaria (ITP 4% - Depósito 5%)</option>
+              </select>
+            </div>
+
+            <!-- CCAA ITP -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Comunidad Autónoma (Impuesto ITP)</label>
+              <select id="calc-ccaa" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-emerald-500">
+                <option value="6">Madrid (6%)</option>
+                <option value="7">Andalucía (7%)</option>
+                <option value="10" selected>Cataluña / C. Valenciana / Galicia (10%)</option>
+                <option value="8">Murcia / Castilla y León / Extremadura (8%)</option>
+                <option value="9">Castilla-La Mancha / Aragón (9%)</option>
+                <option value="4">País Vasco / Navarra / ITP Joven (4%)</option>
+                <option value="6.5">Canarias (6,5%)</option>
+              </select>
+            </div>
+
+            <!-- Deudas IBI y Comunidad -->
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Provisión IBI + Comunidad Pendiente (Afección Real €)</label>
+              <input type="number" id="calc-deudas" value="1200" min="0" step="100"
+                     class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500 transition">
+              <span class="text-[11px] text-slate-400 mt-1 block">Por ley respondes del año en curso y los 3 anteriores de IBI y Comunidad (afección real).</span>
+            </div>
+          </div>
+
+          <!-- Resultados Desglosados -->
+          <div class="mt-6 pt-5 border-t border-slate-700 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-amber-500/40">
+              <div class="text-[10px] font-bold uppercase text-amber-400 tracking-wider">1. Fianza Necesaria HOY para Pujar</div>
+              <div id="res-deposito" class="text-2xl sm:text-3xl font-extrabold text-white mt-0.5">4.750 €</div>
+              <p class="text-[11px] text-slate-400 mt-0.5">Depósito AEAT (NRC). 100% devuelto si pierdes.</p>
+            </div>
+
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-emerald-500/40">
+              <div class="text-[10px] font-bold uppercase text-emerald-400 tracking-wider">2. Resto a Pagar tras Ganar (20-40 días)</div>
+              <div id="res-resto" class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-0.5">61.750 €</div>
+              <p class="text-[11px] text-slate-400 mt-0.5">Tu puja menos la fianza ya entregada.</p>
+            </div>
+          </div>
+
+          <div class="mt-4 bg-slate-900/80 rounded-2xl p-4 border border-slate-700 space-y-2 text-xs sm:text-sm">
+            <div class="flex justify-between text-slate-300">
+              <span>Impuesto de Transmisiones (ITP <span id="res-itp-pct">10</span>%):</span>
+              <span id="res-itp" class="font-semibold text-white">6.650 €</span>
+            </div>
+            <div class="flex justify-between text-slate-300">
+              <span>Registro de la Propiedad + Cancelación Cargas:</span>
+              <span id="res-registro" class="font-semibold text-white">850 €</span>
+            </div>
+            <div class="flex justify-between text-slate-300">
+              <span>Provisión de IBI y Comunidad:</span>
+              <span id="res-deudas" class="font-semibold text-white">1.200 €</span>
+            </div>
+            <div class="border-t border-slate-700 pt-2.5 flex justify-between items-center">
+              <span class="font-black text-sm sm:text-base text-white">INVERSIÓN TOTAL LLAVE EN MANO:</span>
+              <span id="res-total" class="text-xl sm:text-2xl font-black text-amber-400">75.200 €</span>
+            </div>
+            <div class="text-right text-xs text-emerald-400 font-semibold">
+              Descuento frente a tasación oficial BOE: <span id="res-ahorro">19.800 € (20,8%)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL DERECHO: CONSEJOS CLAVE DE GASTOS -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+            <h4 class="font-bold text-emerald-400 text-sm mb-1.5 flex items-center gap-2">
+              <i class="fa-solid fa-file-invoice-dollar"></i> Te ahorras la Notaría
+            </h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              En una subasta judicial o de Hacienda <strong>no hay escritura ante notario</strong>. El título de propiedad oficial que te entrega el juzgado es el <em>Testimonio del Decreto de Adjudicación</em>, que es gratuito y se inscribe directamente en el Registro de la Propiedad.
+            </p>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+            <h4 class="font-bold text-amber-400 text-sm mb-1.5 flex items-center gap-2">
+              <i class="fa-solid fa-landmark"></i> ¿Sobre qué importe se liquida el ITP?
+            </h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Se liquida dentro de los 30 días hábiles siguientes al Decreto de Adjudicación sobre el <strong>precio de remate (tu puja)</strong>, salvo que el <em>Valor de Referencia de Catastro</em> sea superior (en cuyo caso Hacienda toma el mayor). Si eres menor de 35 años y es tu primera vivienda habitual, casi todas las CC.AA. aplican tipos reducidos (3% a 5%).
+            </p>
+          </div>
+
+          <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+            <h4 class="font-bold text-white text-sm mb-1.5 flex items-center gap-2">
+              <i class="fa-solid fa-receipt"></i> Deudas que heredas vs. Deudas que NO heredas
+            </h4>
+            <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
+              <li><strong>Comunidad de Propietarios:</strong> El año de la compra y los <strong>3 años naturales anteriores</strong>.</li>
+              <li><strong>IBI (Contribución):</strong> El año de la compra y los <strong>3 anteriores</strong> por afección real.</li>
+              <li><strong>Luz, agua y gas:</strong> <strong>CERO DEUDAS</strong>. Son contratos personales del anterior titular; tú solicitas altas nuevas con tu Decreto.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
   <!-- ========================================================================= -->
-  <!-- 6. MODAL: AUTENTICACIÓN SUPABASE (LOGIN / REGISTRO) -->
+  <!-- 8. SECCIÓN RIESGOS: REGLAS LEC (70%/50%) Y CHECKLIST DE DOCUMENTACIÓN -->
+  <!-- ========================================================================= -->
+  <section id="riesgos" class="py-16 lg:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-caza-borde">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="text-slate-900 font-bold text-xs uppercase tracking-wider bg-amber-400 px-3 py-1 rounded-full">Seguridad Jurídica Total</span>
+      <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 mt-3">Documentación Imprescindible y Reglas de la Ley</h2>
+      <p class="text-slate-600 mt-3 text-sm sm:text-base">Domina las reglas de la Ley de Enjuiciamiento Civil (LEC) y la checklist de 4 puntos para no cometer errores antes de depositar.</p>
+    </div>
+
+    <!-- Tabla Comparativa LEC -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-10">
+      <div class="bg-slate-900 text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h3 class="font-bold text-base sm:text-lg">Reglas de Oro de Aprobación de Puja (Arts. 670 y 671 LEC)</h3>
+          <p class="text-xs text-slate-400">¿Por cuánto dinero te aprueban el remate de forma firme?</p>
+        </div>
+        <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-lg self-start sm:self-center font-bold">Ley LEC Oficial</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+          <thead>
+            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 text-xs uppercase">
+              <th class="py-3 px-5 font-bold">Tipo de Bien</th>
+              <th class="py-3 px-5 font-bold">Aprobación Firme (Sin rodeos)</th>
+              <th class="py-3 px-5 font-bold">Pujas Inferiores (50% - 69%)</th>
+              <th class="py-3 px-5 font-bold">Si Queda Desierta (0 pujas)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <tr class="hover:bg-slate-50">
+              <td class="py-3.5 px-5 font-bold text-slate-900">🏠 Vivienda Habitual</td>
+              <td class="py-3.5 px-5"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded-md">≥ 70%</span> del valor de subasta</td>
+              <td class="py-3.5 px-5 text-slate-600">Entre 60% y 69,9% se da audiencia al deudor/acreedor. Por debajo del 60% no suele aprobarse.</td>
+              <td class="py-3.5 px-5 text-slate-600">El acreedor puede pedirla por el <strong>70%</strong> (o 60% si la deuda es menor).</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3.5 px-5 font-bold text-slate-900">🏢 Inmueble No Habitual (Local, nave, garaje, 2ª vivienda)</td>
+              <td class="py-3.5 px-5"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded-md">≥ 70%</span> (o 50% si cubre toda la deuda)</td>
+              <td class="py-3.5 px-5 text-slate-600">Desde el <strong>50%</strong> se aprueba si el deudor no presenta mejor postor en 10 días y el banco no pide el 70%.</td>
+              <td class="py-3.5 px-5 text-slate-600">El acreedor puede adjudicársela por el <strong>50%</strong> o por la deuda total.</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3.5 px-5 font-bold text-slate-900">🚙 Bienes Muebles (Vehículos, maquinaria)</td>
+              <td class="py-3.5 px-5"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded-md">≥ 50%</span> de la tasación</td>
+              <td class="py-3.5 px-5 text-slate-600">Admitidas desde el <strong>30%</strong> (o si cubre la deuda reclamada) con visto bueno del Letrado Judicial.</td>
+              <td class="py-3.5 px-5 text-slate-600">El acreedor puede pedirla por el <strong>30%</strong> o deuda completa.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4 Tarjetas de Checklist -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="flex items-center gap-2.5 mb-2.5">
+          <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs">1</span>
+          <h4 class="font-bold text-slate-900 text-base">Cargas Anteriores vs. Cargas Posteriores</h4>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed mb-2.5">
+          En el Registro de la Propiedad las cargas van por orden cronológico estricto:
+        </p>
+        <div class="space-y-1.5 text-xs">
+          <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900">
+            <strong>✅ Cargas POSTERIORES:</strong> Se cancelan y borran gratis con el Mandamiento judicial. No las pagas tú.
+          </div>
+          <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900">
+            <strong>⚠️ Cargas ANTERIORES:</strong> ¡SUBSISTEN! Si se subasta por un embargo de 2023 y hay una hipoteca de 2018 de 50.000 €, tú asumes esa hipoteca.
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="flex items-center gap-2.5 mb-2.5">
+          <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs">2</span>
+          <h4 class="font-bold text-slate-900 text-base">Tipo de Derecho Subastado</h4>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed mb-2.5">
+          Comprueba siempre el encabezado de la descripción en el BOE:
+        </p>
+        <ul class="text-xs text-slate-700 space-y-1.5">
+          <li class="p-2 bg-slate-50 rounded-lg border border-slate-200"><strong>100% Pleno Dominio:</strong> Propiedad absoluta e íntegra. Es lo que filtramos en CazaOfertasBOE.</li>
+          <li class="p-2 bg-slate-50 rounded-lg border border-slate-200"><strong>Cuota Indivisa (ej. 50%):</strong> Compras solo la mitad indivisa junto a otro copropietario. Evítalo para vivir.</li>
+          <li class="p-2 bg-slate-50 rounded-lg border border-slate-200"><strong>Nuda Propiedad:</strong> Compras la propiedad pero otra persona tiene derecho a residir de por vida (usufructo).</li>
+        </ul>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="flex items-center gap-2.5 mb-2.5">
+          <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs">3</span>
+          <h4 class="font-bold text-slate-900 text-base">Situación Posesoria (Posesión Libre)</h4>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed mb-2.5">
+          En la ficha ver=3 del BOE aparece la <em>Situación posesoria</em>:
+        </p>
+        <ul class="text-xs text-slate-700 space-y-1.5">
+          <li class="flex items-start gap-1.5"><span class="text-emerald-600 font-bold">●</span> <span><strong>Libre / Sin ocupantes:</strong> El juzgado autoriza entrega de llaves o cambio de cerradura judicial.</span></li>
+          <li class="flex items-start gap-1.5"><span class="text-amber-600 font-bold">●</span> <span><strong>Inquilino con contrato previo:</strong> Si el alquiler es legal y anterior a la hipoteca, debes respetarlo cobrando tú la renta.</span></li>
+          <li class="flex items-start gap-1.5"><span class="text-slate-600 font-bold">●</span> <span><strong>Sin título / No consta:</strong> Tienes derecho a pedir el desalojo (Art. 675 LEC) dentro del mismo procedimiento judicial en 1 año.</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="flex items-center gap-2.5 mb-2.5">
+          <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs">4</span>
+          <h4 class="font-bold text-slate-900 text-base">Sede Electrónica del Catastro y Fachada</h4>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed mb-2.5">
+          Audita el inmueble con precisión cartográfica antes de depositar:
+        </p>
+        <ul class="text-xs text-slate-700 space-y-1.5">
+          <li class="flex items-start gap-1.5"><span class="text-emerald-600 font-bold">●</span> <span><strong>Referencia Catastral:</strong> En <em>sedecatastro.gob.es</em> consultas plano exacto, m² reales y año de construcción.</span></li>
+          <li class="flex items-start gap-1.5"><span class="text-emerald-600 font-bold">●</span> <span><strong>Visita Exterior y Vecinos:</strong> Visita la calle, comprueba el estado del edificio y consulta al administrador de fincas.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 9. SECCIÓN ESTRATEGIAS: 5 FORMAS REALES DE GANAR SIN SOBREPUJAR -->
+  <!-- ========================================================================= -->
+  <section id="estrategias" class="py-16 bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-950 text-white border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-10">
+        <span class="text-emerald-400 font-bold text-xs uppercase tracking-wider bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full">Tácticas Avanzadas</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold mt-3">5 Estrategias Reales para Ganar Subastas sin Sobrepagar</h2>
+        <p class="text-emerald-100/80 mt-2 text-sm sm:text-base">Cómo operan los inversores y adjudicatarios con experiencia frente a los novatos que pujan por impulso.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-xs sm:text-sm">
+        <div class="bg-slate-900/80 border border-emerald-800/60 p-5 rounded-2xl">
+          <div class="text-amber-400 font-black text-xs mb-1.5">ESTRATEGIA 1</div>
+          <h3 class="text-base font-bold mb-1.5 text-white">Fija tu "Precio Techo" en frío</h3>
+          <p class="text-slate-300 leading-relaxed">
+            Calcula el valor de mercado real, resta reformas, ITP y provisiones de IBI, y añade un margen mínimo del 20%. Nunca subas 1.000 € más en los últimos minutos por orgullo competitivo.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/80 border border-emerald-800/60 p-5 rounded-2xl">
+          <div class="text-amber-400 font-black text-xs mb-1.5">ESTRATEGIA 2</div>
+          <h3 class="text-base font-bold mb-1.5 text-white">Caza las Subastas Desiertas (0 Pujas)</h3>
+          <p class="text-slate-300 leading-relaxed">
+            Muchos compradores esperan al final. Si una subasta llega a las últimas horas con <strong>cero pujas</strong>, puedes entrar en el umbral mínimo legal (50% o 70%) sin competencia de terceros.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/80 border border-emerald-800/60 p-5 rounded-2xl">
+          <div class="text-amber-400 font-black text-xs mb-1.5">ESTRATEGIA 3</div>
+          <h3 class="text-base font-bold mb-1.5 text-white">Marca siempre la "Reserva de Postura"</h3>
+          <p class="text-slate-300 leading-relaxed">
+            Es muy común que el primer postor puje demasiado alto y luego no logre reunir el dinero en 40 días perdiendo su depósito. Si quedaste segundo con reserva de postura, te adjudican el bien a ti por tu oferta.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/80 border border-emerald-800/60 p-5 rounded-2xl">
+          <div class="text-amber-400 font-black text-xs mb-1.5">ESTRATEGIA 4</div>
+          <h3 class="text-base font-bold mb-1.5 text-white">Deposita con 48 horas de antelación</h3>
+          <p class="text-slate-300 leading-relaxed">
+            Las pasarelas bancarias de la AEAT a veces tienen límites diarios de transferencia o mantenimientos. Genera tu código NRC con 2 o 3 días de margen para no quedarte fuera por una incidencia informática.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/80 border border-emerald-800/60 p-5 rounded-2xl">
+          <div class="text-amber-400 font-black text-xs mb-1.5">ESTRATEGIA 5</div>
+          <h3 class="text-base font-bold mb-1.5 text-white">Empieza por Garajes o Trasteros</h3>
+          <p class="text-slate-300 leading-relaxed">
+            Para familiarizarte con el portal del BOE sin estrés financiero, participa en una plaza de garaje de 4.000 € a 10.000 € (depósito de 200 € a 1.000 €). Aprenderás todo el circuito legal con riesgo mínimo.
+          </p>
+        </div>
+
+        <div class="bg-emerald-600 text-slate-900 p-5 rounded-2xl flex flex-col justify-between shadow-lg">
+          <div>
+            <div class="font-black text-[10px] uppercase tracking-wider text-emerald-950 mb-1">Radar Automatizado</div>
+            <h3 class="text-lg font-black mb-1.5 text-slate-900">Ahorra semanas de búsqueda</h3>
+            <p class="text-xs font-semibold leading-relaxed text-emerald-950">
+              En <strong>CazaOfertasBOE</strong> geolocalizamos, clasificamos por categorías y calculamos el depósito exacto de cada subasta de España de forma automática.
+            </p>
+          </div>
+          <a href="#mapa-radar" class="mt-3.5 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition">
+            Volver al Mapa y Ofertas →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 10. SECCIÓN FAQ: ENCICLOPEDIA PRÁCTICA (36 DUDAS RESUELTAS CON BUSCADOR) -->
+  <!-- ========================================================================= -->
+  <section id="faq" class="py-16 lg:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <span class="text-emerald-700 font-bold text-xs uppercase tracking-wider bg-emerald-100 px-3 py-1 rounded-full">Enciclopedia Práctica</span>
+      <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 mt-3">FAQ Hipercompleta de Subastas del BOE</h2>
+      <p class="text-slate-600 mt-2 text-sm sm:text-base max-w-2xl mx-auto">
+        Más de 35 preguntas reales resueltas sin rodeos para cualquier persona que empieza desde cero. Escribe una palabra clave o filtra por tema.
+      </p>
+    </div>
+
+    <!-- Buscador Instantáneo -->
+    <div class="relative max-w-2xl mx-auto mb-5">
+      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm"></i>
+      </div>
+      <input type="text" id="faq-search" placeholder="Busca cualquier duda: hipoteca, certificado digital, 5%, okupas, devolver, ITP, reserva..."
+             class="w-full pl-11 pr-12 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 font-medium text-xs sm:text-sm shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
+      <button id="faq-clear" class="hidden absolute inset-y-0 right-0 pr-4 flex items-center text-xs font-bold text-slate-400 hover:text-slate-700">
+        Limpiar
+      </button>
+    </div>
+
+    <!-- Filtros por Categoría de FAQ -->
+    <div id="faq-categories" class="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-6">
+      <button data-cat="todas" class="faq-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-xs transition">
+        Todas (36)
+      </button>
+      <button data-cat="primeros-pasos" class="faq-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-emerald-500 transition">
+        🚀 Primeros Pasos
+      </button>
+      <button data-cat="dinero-hipotecas" class="faq-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-emerald-500 transition">
+        💶 Dinero e Hipotecas
+      </button>
+      <button data-cat="depositos" class="faq-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-emerald-500 transition">
+        🏦 Depósitos y Devoluciones
+      </button>
+      <button data-cat="cargas-ocupacion" class="faq-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-emerald-500 transition">
+        🛡️ Cargas y Ocupación
+      </button>
+      <button data-cat="durante-puja" class="faq-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-emerald-500 transition">
+        ⚡ Durante la Puja
+      </button>
+      <button data-cat="post-subasta" class="faq-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-emerald-500 transition">
+        🔑 Post-Subasta y Posesión
+      </button>
+    </div>
+
+    <!-- Contador de resultados -->
+    <div class="flex justify-between items-center text-xs text-slate-500 mb-3 px-1">
+      <span id="faq-count">Mostrando 36 preguntas frecuentes</span>
+      <button id="faq-expand-all" class="text-emerald-700 font-bold hover:underline">Expandir todas</button>
+    </div>
+
+    <!-- Contenedor dinámico del Acordeón FAQ -->
+    <div id="faq-list" class="space-y-2.5"></div>
+
+    <!-- Mensaje sin resultados -->
+    <div id="faq-empty" class="hidden text-center py-12 bg-white rounded-2xl border border-slate-200">
+      <p class="text-slate-700 font-bold text-base">No hemos encontrado preguntas con esa búsqueda</p>
+      <p class="text-slate-500 text-xs mt-1">Prueba con palabras como "depósito", "hipoteca", "plazo", "catastro" o "impuestos".</p>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 11. MODAL: AUTENTICACIÓN SUPABASE (LOGIN / REGISTRO) -->
   <!-- ========================================================================= -->
   <div id="modal-auth" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 border border-slate-100 relative">
@@ -401,7 +1019,7 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- 7. MODAL: STRIPE CHECKOUT PRO (9 €/MES) -->
+  <!-- 12. MODAL: STRIPE CHECKOUT PRO (9 €/MES) -->
   <!-- ========================================================================= -->
   <div id="modal-checkout" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 sm:p-7 border border-slate-100 relative">
@@ -461,7 +1079,7 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- 8. MODAL: SERVICIO DE REVISIÓN DE CARGAS NOTARIAL (59 €) -->
+  <!-- 13. MODAL: SERVICIO DE REVISIÓN NOTARIAL DE CARGAS (59 €) -->
   <!-- ========================================================================= -->
   <div id="modal-cargas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 border border-slate-100 relative">
@@ -490,7 +1108,7 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- 9. MODALES LEGALES (RGPD & TIKTOK DEVELOPERS) -->
+  <!-- 14. MODALES LEGALES (RGPD & TIKTOK DEVELOPERS) -->
   <!-- ========================================================================= -->
   <div id="modal-legal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full max-h-[85vh] flex flex-col border border-slate-100">
@@ -510,15 +1128,20 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- 10. PIE DE PÁGINA -->
+  <!-- 15. PIE DE PÁGINA -->
   <!-- ========================================================================= -->
-  <footer class="bg-white border-t border-caza-borde py-3 px-4 sm:px-6 text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+  <footer class="bg-white border-t border-caza-borde py-6 px-4 sm:px-6 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-2">
-        <span class="font-bold text-slate-700">CazaOfertasBOE</span>
+        <span class="font-black text-slate-800 text-sm">CazaOfertas<span class="text-emerald-600">BOE</span></span>
         <span>— © 2026. Datos públicos certificados del Boletín Oficial del Estado (BOE).</span>
       </div>
-      <div class="flex items-center gap-4">
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="#inicio" class="hover:text-slate-900 transition-colors">Inicio</a>
+        <a href="#mapa-radar" class="hover:text-slate-900 transition-colors">Radar</a>
+        <a href="#fases" class="hover:text-slate-900 transition-colors">Guía 6 Pasos</a>
+        <a href="#calculadora-gastos" class="hover:text-slate-900 transition-colors">Calculadora CCAA</a>
+        <a href="#faq" class="hover:text-slate-900 transition-colors">FAQ (36+)</a>
         <a href="#terms" onclick="abrirModalLegal('terms'); return false;" class="hover:text-slate-900 transition-colors">Términos del Servicio</a>
         <a href="#privacy" onclick="abrirModalLegal('privacy'); return false;" class="hover:text-slate-900 transition-colors">Política de Privacidad</a>
         <a href="https://t.me/AlertasBoeRadar" target="_blank" class="text-sky-600 font-semibold hover:underline">Canal Telegram</a>
@@ -527,7 +1150,7 @@
   </footer>
 
   <!-- ========================================================================= -->
-  <!-- 11. MOTOR JAVASCRIPT: SUPABASE AUTH + RLS + CALCULADORA "TU BOLSILLO" -->
+  <!-- 16. MOTOR JAVASCRIPT: SUPABASE AUTH + RLS + MAPA + CALCULADORA + 36 FAQS -->
   <!-- ========================================================================= -->
   <script>
     // -------------------------------------------------------------------------
@@ -550,7 +1173,7 @@
 
     // Estado Global de la Aplicación
     let subastasPublicas = [];
-    let subastasVipDict = {}; // id -> datos VIP (solo si suscriptor activo)
+    let subastasVipDict = {};
     let subastasFiltradas = [];
     let categoriaActual = 'Todas';
     let mapa = null;
@@ -561,7 +1184,7 @@
     let modoAuth = 'login';
     let subastaSeleccionadaParaCargas = null;
 
-    // Normalizador de categorías acentuadas
+    // Normalizador de texto sin acentos
     function normalizar(texto) {
       return (texto || '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     }
@@ -597,7 +1220,6 @@
         scrollWheelZoom: true
       }).setView([40.4168, -3.7038], 6);
 
-      // Cartografía nítida Esri World Street Map (Libre de bloqueos 403)
       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 19,
         attribution: 'Tiles &copy; Esri'
@@ -622,7 +1244,6 @@
     async function cargarDatos() {
       let rawData = [];
 
-      // 1. Intento de carga desde Supabase (subastas_publicas)
       if (supabaseClient) {
         try {
           const { data, error } = await supabaseClient
@@ -656,7 +1277,6 @@
         }
       }
 
-      // 2. Fallback local si Supabase aún no está conectado
       if (rawData.length === 0) {
         if (window.SUBASTAS_DATA && Array.isArray(window.SUBASTAS_DATA)) {
           rawData = window.SUBASTAS_DATA;
@@ -674,7 +1294,6 @@
         const tasacion = s.tasacion || s.valorTasacion || 0;
         const deposito = s.deposito5 || s.deposito || Math.round(tasacion * 0.05);
         const pujaSugerida = s.pujaSugerida || Math.round(tasacion * 0.5);
-        // Estimación de gastos e ITP orientativos (~8% de la puja sugerida o tasación)
         const gastosEstimados = Math.round(pujaSugerida * 0.08);
         const entradaTotal = deposito + gastosEstimados;
 
@@ -684,7 +1303,6 @@
           subtipoBien: s.subtipoBien || s.tipoBien || 'Inmueble',
           provincia: s.provincia || 'España',
           municipio: s.localidad || s.municipio || s.provincia,
-          // Coordenadas aproximadas en modo público si no es suscriptor PRO
           lat: s.lat ? (esSuscriptorPro ? s.lat : Math.round(s.lat * 100) / 100) : 40.4168,
           lng: s.lng ? (esSuscriptorPro ? s.lng : Math.round(s.lng * 100) / 100) : -3.7038,
           tasacion: tasacion,
@@ -712,7 +1330,6 @@
         };
       });
 
-      // 3. Si el usuario está autenticado, consultar subastas_vip mediante RLS
       if (esSuscriptorPro && supabaseClient) {
         try {
           const { data: vipData, error: vipError } = await supabaseClient
@@ -775,26 +1392,20 @@
       aplicarFiltros();
     }
 
-    // -------------------------------------------------------------------------
-    // APLICAR FILTROS Y RENDERIZAR
-    // -------------------------------------------------------------------------
     function aplicarFiltros() {
       const query = normalizar(document.getElementById('input-busqueda').value.trim());
       const maxTasacion = Number(document.getElementById('select-precio-max').value) || 999999999;
       const orden = document.getElementById('select-orden').value;
 
       subastasFiltradas = subastasPublicas.filter(s => {
-        // Filtro Categoría
         if (categoriaActual !== 'Todas') {
           const c = normalizar(s.categoria);
           const sel = normalizar(categoriaActual);
           if (!c.includes(sel) && !sel.includes(c)) return false;
         }
 
-        // Filtro Tasación
         if (s.tasacion > maxTasacion) return false;
 
-        // Filtro Búsqueda
         if (query) {
           const matchProv = normalizar(s.provincia).includes(query);
           const matchMun = normalizar(s.municipio).includes(query);
@@ -805,7 +1416,6 @@
         return true;
       });
 
-      // Ordenación
       if (orden === 'tasacion_asc') subastasFiltradas.sort((a, b) => a.tasacion - b.tasacion);
       else if (orden === 'tasacion_desc') subastasFiltradas.sort((a, b) => b.tasacion - a.tasacion);
       else if (orden === 'deposito_asc') subastasFiltradas.sort((a, b) => a.deposito - b.deposito);
@@ -842,9 +1452,6 @@
       document.getElementById('stat-m2').textContent = mediaM2 > 0 ? formatEuro(mediaM2) + '/m²' : 'N/D';
     }
 
-    // -------------------------------------------------------------------------
-    // RENDERIZADO DEL LISTADO CON CALCULADORA "TU BOLSILLO"
-    // -------------------------------------------------------------------------
     function renderizarListado() {
       const contenedor = document.getElementById('lista-subastas');
       contenedor.innerHTML = '';
@@ -872,7 +1479,6 @@
         card.onclick = () => enfocarEnMapa(s.id);
 
         card.innerHTML = `
-          <!-- Cabecera Tarjeta: Categoría y Provincia -->
           <div class="flex items-start justify-between gap-2 mb-2 pb-2 border-b border-slate-100">
             <div>
               <div class="flex items-center gap-1.5 flex-wrap">
@@ -895,7 +1501,6 @@
             </span>
           </div>
 
-          <!-- Semáforo de Garantías CazaOfertasBOE -->
           <div class="flex flex-wrap gap-1 mb-2.5">
             <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded-md font-semibold flex items-center gap-1">
               <i class="fa-solid fa-check text-[9px]"></i> 100% Pleno Dominio
@@ -939,7 +1544,6 @@
 
           <!-- SECCIÓN BLINDADA ANTI-COPIA / DATOS PRO -->
           ${vip ? `
-            <!-- DESBLOQUEADO PARA SUSCRIPTORES PRO -->
             <div class="space-y-1.5 pt-1 text-xs">
               ${vip.referenciaCatastral ? `
                 <a href="${vip.urlCatastro || ('https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=U&RefC=' + encodeURIComponent(vip.referenciaCatastral.trim()))}" 
@@ -965,14 +1569,12 @@
                 ` : ''}
               </div>
 
-              <!-- Botón de Auditoría Jurídica y de Cargas -->
               <button onclick="event.stopPropagation(); abrirModalCargas('${s.id}')"
                       class="w-full mt-1 flex items-center justify-center gap-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 text-[10px] font-semibold py-1 px-2 rounded-lg border border-slate-200">
                 <i class="fa-solid fa-scale-balanced text-slate-400"></i> Revisión de Cargas antes de pujar (59 €)
               </button>
             </div>
           ` : `
-            <!-- BLOQUEADO PARA PÚBLICO GENERAL (ANTI-COPIA) -->
             <div class="bg-amber-50/70 border border-amber-200/80 rounded-xl p-2.5 text-center space-y-1.5">
               <div class="flex items-center justify-center gap-1.5 text-amber-800 font-bold text-[11px]">
                 <i class="fa-solid fa-lock text-amber-600"></i>
@@ -994,9 +1596,6 @@
       });
     }
 
-    // -------------------------------------------------------------------------
-    // RENDERIZADO DEL MAPA LEAFLET
-    // -------------------------------------------------------------------------
     function renderizarMapa() {
       if (!mapa || !clusterGroup) return;
 
@@ -1007,7 +1606,6 @@
         const visual = getCategoriaVisual(s.categoria);
         const vip = (esSuscriptorPro && (subastasVipDict[s.id] || s.datosVipLocales)) ? (subastasVipDict[s.id] || s.datosVipLocales) : null;
         
-        // Coordenadas: Exactas si PRO, Aproximadas si público
         const lat = (vip && vip.latExacta) ? vip.latExacta : s.lat;
         const lng = (vip && vip.lngExacta) ? vip.lngExacta : s.lng;
 
@@ -1028,7 +1626,6 @@
 
         const marker = L.marker([lat, lng], { icon: icon });
 
-        // Popup con Calculadora y Seguridad Anti-Copia
         const popupHtml = `
           <div class="p-4 text-slate-800">
             <div class="flex items-start justify-between gap-2 mb-2 pb-2 border-b border-slate-100">
@@ -1051,7 +1648,6 @@
               </span>
             </div>
 
-            <!-- Sellos de Seguridad CazaOfertasBOE -->
             <div class="flex flex-wrap gap-1 mb-2.5">
               <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded font-semibold">
                 <i class="fa-solid fa-check"></i> 100% Pleno Dominio
@@ -1064,7 +1660,6 @@
               </span>
             </div>
 
-            <!-- Resumen Calculadora Tu Bolsillo en Popup -->
             <div class="bg-emerald-50/70 p-2 rounded-xl border border-emerald-200/90 mb-2.5 text-xs">
               <div class="text-[9px] uppercase font-bold text-emerald-800 mb-1 flex items-center justify-between">
                 <span>Tu Bolsillo (Entrada Real)</span>
@@ -1269,7 +1864,6 @@
     }
 
     function procederPagoStripe() {
-      // Si el usuario no ha iniciado sesión, invitar a registrarse primero para vincular su cuenta automáticamente
       if (!usuarioActual) {
         const crearPrimero = confirm("💡 CONSEJO PRO: Para vincular tu pago al instante a tu cuenta, te recomendamos crear tu usuario antes de pagar.\n\n¿Quieres registrarte ahora con tu correo?\n(Si pulsas Cancelar, irás directo al pago seguro de Stripe igualmente)");
         if (crearPrimero) {
@@ -1282,14 +1876,12 @@
       const userId = usuarioActual ? usuarioActual.id : 'anon_' + Math.random().toString(36).substring(2, 9);
       const email = usuarioActual ? usuarioActual.email : '';
 
-      // Enlace oficial de Stripe Payment Link con client_reference_id para el Webhook Deno
       const stripeUrl = `${STRIPE_PAYMENT_LINK_9EUR}?client_reference_id=${encodeURIComponent(userId)}&prefilled_email=${encodeURIComponent(email)}`;
       
       console.log("Redirigiendo a Stripe Checkout:", stripeUrl);
       window.location.href = stripeUrl;
     }
 
-    // Comprobación de retorno tras pago en Stripe
     function verificarRetornoStripe() {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('suscripcion') === 'activa' || urlParams.get('session_id') || urlParams.get('pago') === 'exito') {
@@ -1314,9 +1906,6 @@
       }
     }
 
-    // -------------------------------------------------------------------------
-    // SERVICIO DE REVISIÓN NOTARIAL DE CARGAS (59 €)
-    // -------------------------------------------------------------------------
     function abrirModalCargas(idSubasta) {
       subastaSeleccionadaParaCargas = idSubasta;
       document.getElementById('cargas-subasta-ref').textContent = `Subasta Ref: ${idSubasta}`;
@@ -1332,9 +1921,6 @@
       cerrarModalCargas();
     }
 
-    // -------------------------------------------------------------------------
-    // MODALES LEGALES (RGPD & TIKTOK)
-    // -------------------------------------------------------------------------
     function abrirModalLegal(tipo) {
       const modal = document.getElementById('modal-legal');
       const titulo = document.getElementById('modal-legal-titulo');
@@ -1366,12 +1952,404 @@
       document.getElementById('modal-legal').classList.add('hidden');
     }
 
-    // Arranque
+    // -------------------------------------------------------------------------
+    // LÓGICA DE LA CALCULADORA FINANCIERA AVANZADA CCAA
+    // -------------------------------------------------------------------------
+    const inputValorSubasta = document.getElementById('calc-valor-subasta');
+    const inputPuja = document.getElementById('calc-puja');
+    const selectTipoBien = document.getElementById('calc-tipo-bien');
+    const selectCcaa = document.getElementById('calc-ccaa');
+    const inputDeudas = document.getElementById('calc-deudas');
+
+    function recalcularSubasta() {
+      const valorSubasta = Math.max(0, parseFloat(inputValorSubasta.value) || 0);
+      const puja = Math.max(0, parseFloat(inputPuja.value) || 0);
+      const tipoBien = selectTipoBien.value;
+      let itpPct = parseFloat(selectCcaa.value) || 10;
+      const deudas = Math.max(0, parseFloat(inputDeudas.value) || 0);
+
+      let deposito = (tipoBien === 'fijo_1000') ? 1000 : (valorSubasta * 0.05);
+      if (tipoBien === 'vehiculo_4') itpPct = 4;
+
+      const restoPagar = Math.max(0, puja - deposito);
+      const importeItp = puja * (itpPct / 100);
+      const gastosRegistro = (tipoBien === 'vehiculo_4') ? 120 : 850;
+      const costeTotal = puja + importeItp + gastosRegistro + deudas;
+
+      const ahorro = valorSubasta - puja;
+      const ahorroPct = valorSubasta > 0 ? ((ahorro / valorSubasta) * 100).toFixed(1) : 0;
+
+      document.getElementById('res-deposito').textContent = formatEuro(deposito);
+      document.getElementById('res-resto').textContent = formatEuro(restoPagar);
+      document.getElementById('res-itp-pct').textContent = itpPct;
+      document.getElementById('res-itp').textContent = formatEuro(importeItp);
+      document.getElementById('res-registro').textContent = formatEuro(gastosRegistro);
+      document.getElementById('res-deudas').textContent = formatEuro(deudas);
+      document.getElementById('res-total').textContent = formatEuro(costeTotal);
+
+      const elAhorro = document.getElementById('res-ahorro');
+      if (ahorro >= 0) {
+        elAhorro.textContent = `${formatEuro(ahorro)} (${ahorroPct}%)`;
+        elAhorro.className = 'text-emerald-400 font-bold';
+      } else {
+        elAhorro.textContent = `Sobreprecio de ${formatEuro(Math.abs(ahorro))}`;
+        elAhorro.className = 'text-amber-400 font-bold';
+      }
+    }
+
+    [inputValorSubasta, inputPuja, selectTipoBien, selectCcaa, inputDeudas].forEach(el => {
+      if (el) {
+        el.addEventListener('input', recalcularSubasta);
+        el.addEventListener('change', recalcularSubasta);
+      }
+    });
+
+    // -------------------------------------------------------------------------
+    // BASE DE DATOS DE LAS 36 FAQS Y MOTOR DE BÚSQUEDA INTERACTIVO
+    // -------------------------------------------------------------------------
+    const faqsData = [
+      {
+        cat: 'primeros-pasos',
+        catLabel: 'Primeros Pasos',
+        q: '1. ¿Puede participar cualquier persona normal o hace falta ser empresa / abogado?',
+        a: 'Cualquier persona física mayor de 18 años con capacidad de obrar puede pujar en solitario desde su casa. No necesitas ser autónomo, ni empresa, ni contratar abogado ni procurador para participar ni para adjudicarte un bien.'
+      },
+      {
+        cat: 'primeros-pasos',
+        catLabel: 'Primeros Pasos',
+        q: '2. ¿Qué requisitos técnicos necesito hoy mismo para darme de alta?',
+        a: 'Solo tres cosas gratuitas: 1) Un Certificado Digital de la FNMT, DNI electrónico con lector o Cl@ve Permanente activa. 2) Tener instalada en tu ordenador la aplicación oficial AutoFirma (para firmar documentos telemáticos). 3) Una cuenta bancaria con IBAN español a tu nombre.'
+      },
+      {
+        cat: 'primeros-pasos',
+        catLabel: 'Primeros Pasos',
+        q: '3. ¿Cuál es la web oficial real donde se puja? ¿Hay intermediarios?',
+        a: 'El único portal oficial del Estado es <strong>https://subastas.boe.es</strong>, gestionado por la Agencia Estatal Boletín Oficial del Estado. Todas las subastas judiciales, notariales y de Hacienda (AEAT) se celebran ahí. No pagues comisiones a intermediarios por "inscribirte".'
+      },
+      {
+        cat: 'primeros-pasos',
+        catLabel: 'Primeros Pasos',
+        q: '4. ¿Qué diferencia hay entre subasta Judicial, de Hacienda (AEAT), Seguridad Social y Notarial?',
+        a: 'Todas se publican en el BOE, pero cambia quién las gestiona y sus plazos: las <strong>Judiciales</strong> vienen de juzgados (ejecuciones hipotecarias, embargos, divorcios/herencias) y dan 20 o 40 días hábiles para pagar. Las de la <strong>AEAT (Hacienda)</strong> dan 15 días hábiles para pagar el resto. Las <strong>Notariales</strong> suelen ser ventas extrajudiciales pactadas.'
+      },
+      {
+        cat: 'primeros-pasos',
+        catLabel: 'Primeros Pasos',
+        q: '5. ¿Se puede visitar por dentro una vivienda antes de pujar?',
+        a: 'Por norma general, <strong>NO</strong>. Al ser un procedimiento de embargo o liquidación, el juzgado no organiza jornadas de puertas abiertas. Sin embargo, si el inmueble pertenece a una promotora en concurso o a un banco que colabora, a veces el administrador concursal sí enseña las llaves. Siempre puedes visitar el exterior, el portal y preguntar a los vecinos.'
+      },
+      {
+        cat: 'primeros-pasos',
+        catLabel: 'Primeros Pasos',
+        q: '6. ¿Puedo pujar en nombre de otra persona o comprar a medias con mi pareja?',
+        a: 'Sí. Al realizar la puja en el portal del BOE, el sistema te pregunta si pujas "en nombre propio", "en representación de terceros" (necesitarás poder notarial) o "en régimen de gananciales / copropiedad" indicando el porcentaje de cada comprador (por ejemplo, 50% tú y 50% tu pareja).'
+      },
+      {
+        cat: 'dinero-hipotecas',
+        catLabel: 'Dinero e Hipotecas',
+        q: '7. ¿Puedo pedir una hipoteca normal para pagar un piso ganado en subasta?',
+        a: 'Es muy difícil con una hipoteca tradicional estándar porque el banco necesita tasar el piso por dentro antes de darte el dinero y no te entregan la propiedad hasta que pagas al juzgado. Existen dos alternativas reales: 1) Tener el dinero ahorrado o préstamo familiar. 2) Solicitar un <strong>préstamo puente o hipoteca específica para subastas</strong> con entidades especializadas teniendo ya una preaprobación antes de pujar.'
+      },
+      {
+        cat: 'dinero-hipotecas',
+        catLabel: 'Dinero e Hipotecas',
+        q: '8. ¿Qué es el "Valor de Subasta" y en qué se diferencia del "Valor de Tasación" y la "Puja Mínima"?',
+        a: 'El <strong>Valor de Subasta</strong> es la cifra oficial sobre la que se calculan todos los porcentajes de la ley (el depósito del 5%, el 70% de adjudicación, etc.). El <strong>Valor de Tasación</strong> es la valoración pericial inicial (a veces coincide con el valor de subasta, otras veces se le restan cargas previas). La <strong>Puja Mínima</strong> es el importe desde el que empieza a admitir ofertas el portal (a menudo "Sin puja mínima", aunque luego apliquen los mínimos legales del 50% o 70% para aprobarla).'
+      },
+      {
+        cat: 'dinero-hipotecas',
+        catLabel: 'Dinero e Hipotecas',
+        q: '9. ¿Qué pasa si gano la subasta y luego no consigo reunir el dinero a tiempo?',
+        a: 'Es el escenario que debes evitar a toda costa: si transcurre el plazo legal (20 o 40 días hábiles) y no ingresas el resto del dinero, <strong>pierdes íntegramente tu depósito del 5%</strong>, que se destina a pagar los gastos de la subasta fallida y reducir la deuda del ejecutado.'
+      },
+      {
+        cat: 'dinero-hipotecas',
+        catLabel: 'Dinero e Hipotecas',
+        q: '10. ¿Qué es la "Cantidad Reclamada" que aparece en la ficha del BOE?',
+        a: 'Es el dinero que el ejecutado le debe al acreedor que inició el embargo (principal + intereses + costas). Es un dato súper útil: si un piso vale 100.000 € y la cantidad reclamada es solo 35.000 €, el ejecutado puede frenar la subasta en cualquier momento antes de la aprobación pagando esos 35.000 €, y además te da pistas sobre cuánto aceptará el banco.'
+      },
+      {
+        cat: 'dinero-hipotecas',
+        catLabel: 'Dinero e Hipotecas',
+        q: '11. ¿Cuánto dinero mínimo necesito para empezar en subastas si tengo pocos ahorros?',
+        a: 'No hace falta tener 100.000 €. En el BOE salen a diario <strong>plazas de garaje y trasteros</strong> por 3.000 € a 10.000 € (donde el depósito es de apenas 250 € a 1.000 €) y <strong>vehículos</strong> desde 1.500 €. Son activos ideales para aprender todo el proceso con capital reducido.'
+      },
+      {
+        cat: 'depositos',
+        catLabel: 'Depósitos y Devoluciones',
+        q: '12. ¿Cómo se paga exactamente el depósito del 5% y qué es el código NRC?',
+        a: 'Dentro de la ficha de la subasta en el BOE pulsas "Pujar" y el portal te redirige a la pasarela de la Agencia Tributaria (AEAT). Puedes pagar mediante <strong>cargo directo en cuenta corriente</strong> o con <strong>tarjeta</strong> de cualquiera de los bancos colaboradores (Santander, BBVA, CaixaBank, Sabadell, Bankinter, ING, etc.). Al confirmarse el pago, se genera un código alfanumérico de 22 caracteres llamado <strong>NRC</strong> que desbloquea tu derecho a pujar.'
+      },
+      {
+        cat: 'depositos',
+        catLabel: 'Depósitos y Devoluciones',
+        q: '13. ¿Puedo hacer el depósito desde una cuenta bancaria que no esté a mi nombre?',
+        a: '<strong>NO.</strong> El ordenante de la cuenta o titular de la tarjeta con la que pagas el depósito en la AEAT debe coincidir exactamente con el NIF de la persona registrada en el portal del BOE que va a pujar. Si usas la cuenta de un familiar, el sistema rechazará el NRC.'
+      },
+      {
+        cat: 'depositos',
+        catLabel: 'Depósitos y Devoluciones',
+        q: '14. ¿Por qué algunas subastas nuevas piden un depósito fijo de 1.000 € en lugar del 5%?',
+        a: 'Con la entrada en vigor de la reciente <strong>Ley de Eficiencia del Servicio Público de Justicia</strong>, para agilizar trámites en determinados bienes (especialmente bienes muebles o lotes de escasa cuantía) se han actualizado los criterios de depósito fijo (como 1.000 €) y pujas cerradas. Siempre debes fijarte en la casilla exacta "Importe del depósito" de la pestaña General (ver=1) de cada subasta.'
+      },
+      {
+        cat: 'depositos',
+        catLabel: 'Depósitos y Devoluciones',
+        q: '15. Si pierdo la subasta, ¿tengo que pedir que me devuelvan el depósito o es automático?',
+        a: 'Es <strong>100% automático</strong>. En cuanto el Letrado de la Administración de Justicia certifica el cierre de la subasta, el sistema ordena la devolución a todos los postores no ganadores que NO marcaron reserva de postura. El dinero vuelve a tu cuenta bancaria en un plazo habitual de 2 a 7 días hábiles sin comisiones.'
+      },
+      {
+        cat: 'depositos',
+        catLabel: 'Depósitos y Devoluciones',
+        q: '16. ¿Qué ocurre con mi depósito si la subasta se suspende o se cancela antes de terminar?',
+        a: 'Si el deudor paga su deuda o el juzgado suspende la subasta antes de adjudicarla, tu depósito se te devuelve íntegro automáticamente a tu cuenta bancaria en unos días.'
+      },
+      {
+        cat: 'cargas-ocupacion',
+        catLabel: 'Cargas y Ocupación',
+        q: '17. ¿Qué significa exactamente "Cargas Anteriores" y "Cargas Posteriores"?',
+        a: 'Es la regla más importante del derecho hipotecario: la carga que se está ejecutando en la subasta marca el corte. Todas las deudas o embargos inscritos en el Registro <strong>después</strong> de esa fecha se cancelan y desaparecen cuando ganas. En cambio, cualquier hipoteca o embargo inscrito <strong>antes</strong> de esa fecha NO se borra: tú te quedas el inmueble con esa deuda encima y tendrás que pagarla.'
+      },
+      {
+        cat: 'cargas-ocupacion',
+        catLabel: 'Cargas y Ocupación',
+        q: '18. ¿Dónde veo las cargas reales antes de pujar?',
+        a: 'Tienes dos fuentes: 1) La <strong>Certificación de Cargas</strong> que suele estar subida en PDF en la pestaña "Documentos" del BOE. 2) Como esa certificación puede tener 1 o 2 años de antigüedad, debes pedir siempre una <strong>Nota Simple actualizada</strong> en <em>registradores.org</em> (cuesta unos 9 € + IVA y te llega al email en unas horas).'
+      },
+      {
+        cat: 'cargas-ocupacion',
+        catLabel: 'Cargas y Ocupación',
+        q: '19. ¿Qué es una "Cuota Indivisa" y por qué hay que tener tanto cuidado?',
+        a: 'Significa que no se subasta el 100% del piso, sino solo un porcentaje (por ejemplo, "el 50% del pleno dominio" porque solo embargaron a uno de los dos cónyuges o hermanos). Si ganas, serás copropietario junto con un desconocido que probablemente vive dentro. Nunca compres un indiviso si buscas tu primera vivienda para entrar a vivir.'
+      },
+      {
+        cat: 'cargas-ocupacion',
+        catLabel: 'Cargas y Ocupación',
+        q: '20. ¿Qué es la "Nuda Propiedad" frente al "Pleno Dominio"?',
+        a: 'El <strong>Pleno Dominio</strong> es la propiedad completa (uso + titularidad). La <strong>Nuda Propiedad</strong> es ser dueño en los papeles mientras otra persona (el usufructuario, normalmente una persona mayor con usufructo vitalicio) conserva el derecho legal a vivir o alquilar el piso hasta su fallecimiento. Para vivir hoy, busca siempre "100% Pleno Dominio".'
+      },
+      {
+        cat: 'cargas-ocupacion',
+        catLabel: 'Cargas y Ocupación',
+        q: '21. ¿Qué pasa si el piso ganado en subasta tiene okupas o vive el antiguo dueño dentro?',
+        a: 'Según el artículo 675 de la Ley de Enjuiciamiento Civil, una vez inscrito el Decreto de Adjudicación, tienes derecho a pedir al propio juzgado de la subasta el <strong>lanzamiento (desalojo judicial)</strong> dentro del plazo de un año, sin necesidad de abrir un juicio nuevo de desahucio. Si hay un inquilino con contrato de alquiler legal vigente anterior a la hipoteca, deberás respetar su contrato cobrando tú el alquiler.'
+      },
+      {
+        cat: 'cargas-ocupacion',
+        catLabel: 'Cargas y Ocupación',
+        q: '22. ¿Tengo que pagar las facturas impagadas de luz, agua o gas del anterior propietario?',
+        a: '<strong>No.</strong> Los suministros son contratos personales vinculados al titular anterior, no a la vivienda. Con tu Decreto de Adjudicación vas a la compañía suministradora y das de alta un contrato nuevo a tu nombre desde cero.'
+      },
+      {
+        cat: 'cargas-ocupacion',
+        catLabel: 'Cargas y Ocupación',
+        q: '23. ¿Y qué pasa con el IBI y las cuotas de Comunidad de Propietarios impagadas?',
+        a: 'Esas deudas sí van ligadas al inmueble por "afección real". Por ley, el nuevo adjudicatario responde de las cuotas de <strong>Comunidad de Propietarios</strong> del año en curso en que adquiere y de los <strong>3 años naturales anteriores</strong>, y exactamente igual con el <strong>IBI</strong> (año en curso y 3 anteriores). Por eso conviene preguntar al administrador de fincas antes de pujar.'
+      },
+      {
+        cat: 'durante-puja',
+        catLabel: 'Durante la Puja',
+        q: '24. ¿Cuánto tiempo dura abierta una subasta en el BOE?',
+        a: 'Todas las subastas electrónicas en el portal del BOE permanecen abiertas durante <strong>20 días naturales</strong> (incluyendo sábados, domingos y festivos) desde su apertura, cerrando habitualmente a las 18:00 horas (hora peninsular) del vigésimo día.'
+      },
+      {
+        cat: 'durante-puja',
+        catLabel: 'Durante la Puja',
+        q: '25. ¿Cómo funciona la "Puja Máxima Automática"?',
+        a: 'En lugar de estar pegado al ordenador pujando euro a euro, puedes introducir tu límite máximo (ej. 65.000 €) aunque la subasta vaya por 40.000 €. El sistema solo pujará por ti el tramo mínimo necesario para superar la oferta actual (ej. 41.000 €) e irá subiendo automáticamente si otros pujan, sin pasar nunca de tus 65.000 €.'
+      },
+      {
+        cat: 'durante-puja',
+        catLabel: 'Durante la Puja',
+        q: '26. ¿Qué es la casilla "Pujar con Reserva de Postura"? ¿Conviene marcarla?',
+        a: 'Significa que si quedas segundo o tercero, autorizas al juzgado a retener tu depósito del 5% hasta que el ganador pague el resto del dinero. Si el ganador se echa atrás y no paga, te adjudican el bien a ti por tu oferta. <strong>Conviene marcarla casi siempre</strong> si realmente quieres el bien y no te importa esperar unos días más la devolución.'
+      },
+      {
+        cat: 'durante-puja',
+        catLabel: 'Durante la Puja',
+        q: '27. ¿Puedo cancelar o retirar una puja una vez enviada?',
+        a: '<strong>NO.</strong> Todas las pujas realizadas en el Portal de Subastas del BOE son firmes e irrevocables. Una vez firmada con tu certificado digital, no puedes anularla ni bajar el importe (solo puedes subirla).'
+      },
+      {
+        cat: 'durante-puja',
+        catLabel: 'Durante la Puja',
+        q: '28. ¿Se prorroga la subasta si alguien puja en el último minuto?',
+        a: 'Depende del régimen legal aplicable a la subasta: en las subastas regidas por el sistema clásico de la LEC, si entra una puja válida en la última hora, el cierre se prorroga automáticamente 1 hora más (hasta un máximo de 24 horas). Sin embargo, en las subastas tramitadas bajo la nueva <strong>Ley de Eficiencia</strong> (como muchas de 2025-2026), las pujas son secretas y no existe prórroga: cierra a la hora exacta fijada.'
+      },
+      {
+        cat: 'durante-puja',
+        catLabel: 'Durante la Puja',
+        q: '29. ¿Qué significa "Subasta por Lotes" y "Puja Separada"?',
+        a: 'Cuando en un mismo procedimiento se embargan varios bienes (por ejemplo, Lote 1: Piso, Lote 2: Plaza de garaje, Lote 3: Trastero), cada lote funciona como una subasta independiente con su propia tasación, su propio depósito y su propia puja.'
+      },
+      {
+        cat: 'post-subasta',
+        catLabel: 'Post-Subasta y Posesión',
+        q: '30. He ganado la subasta. ¿Cuántos días tengo para pagar el resto del dinero?',
+        a: 'Depende del procedimiento: en <strong>ejecuciones hipotecarias</strong> de inmuebles tienes <strong>20 días hábiles</strong>; en <strong>ejecuciones ordinarias/dinerarias</strong> de inmuebles tienes <strong>40 días hábiles</strong>; en subastas de la <strong>Agencia Tributaria (AEAT)</strong> tienes <strong>15 días hábiles</strong>; y en <strong>bienes muebles</strong> (coches, maquinaria) tienes <strong>10 días hábiles</strong>. El plazo cuenta desde que el juzgado te notifica el Decreto de Aprobación del Remate.'
+      },
+      {
+        cat: 'post-subasta',
+        catLabel: 'Post-Subasta y Posesión',
+        q: '31. ¿Qué es la "Cesión de Remate"?',
+        a: 'Es la facultad de traspasar el derecho a adjudicarse el bien a una tercera persona antes de que se dicte el Decreto de Adjudicación (pagando esa persona el resto del precio directamente en el juzgado). Por ley, actualmente la cesión de remate está reservada principalmente al ejecutante (el banco/acreedor), aunque muchos inversores compran cesiones de remate directamente a los bancos.'
+      },
+      {
+        cat: 'post-subasta',
+        catLabel: 'Post-Subasta y Posesión',
+        q: '32. ¿Qué impuestos se pagan al ganar una vivienda en subasta: IVA o ITP?',
+        a: 'En la inmensa mayoría de viviendas y garajes de segunda mano se paga el <strong>ITP (Impuesto de Transmisiones Patrimoniales)</strong> de tu Comunidad Autónoma (entre el 4% y el 10%). Solo se paga IVA (10% en vivienda o 21% en locales/solares) si el bien es una primera entrega de una promotora o empresa en concurso que renuncia a la exención.'
+      },
+      {
+        cat: 'post-subasta',
+        catLabel: 'Post-Subasta y Posesión',
+        q: '33. ¿Tengo que pagar la Plusvalía Municipal (IIVTNU) al ganar una subasta?',
+        a: '<strong>NO.</strong> En una transmisión forzosa (subasta judicial o administrativa), el sujeto pasivo obligado legalmente al pago de la Plusvalía Municipal es el ejecutado (el propietario anterior que pierde el bien), nunca el comprador adjudicatario.'
+      },
+      {
+        cat: 'post-subasta',
+        catLabel: 'Post-Subasta y Posesión',
+        q: '34. ¿Qué documentos me da el juzgado para poner el piso a mi nombre en el Registro?',
+        a: 'Una vez pagado el resto del precio, el juzgado emite dos documentos esenciales: 1) El <strong>Testimonio del Decreto de Adjudicación</strong> (que es tu título de propiedad, equivalente a la escritura notarial). 2) El <strong>Mandamiento de Cancelación de Cargas</strong> (que ordena al Registrador borrar la hipoteca/embargo ejecutado y todas las cargas posteriores). Con ambos documentos liquidas el ITP y los presentas en el Registro de la Propiedad.'
+      },
+      {
+        cat: 'post-subasta',
+        catLabel: 'Post-Subasta y Posesión',
+        q: '35. ¿Puedo vender el piso inmediatamente después de adjudicármelo?',
+        a: 'Sí. Una vez que el Decreto de Adjudicación esté inscrito a tu nombre en el Registro de la Propiedad y tengas la posesión del inmueble, eres propietario pleno a todos los efectos legales y puedes vivir en él, alquilarlo o venderlo libremente cuando quieras.'
+      },
+      {
+        cat: 'post-subasta',
+        catLabel: 'Post-Subasta y Posesión',
+        q: '36. ¿Qué pasa si la puja ganadora es inferior al 70% (o 50%)? ¿Me pueden quitar la adjudicación?',
+        a: 'Si pujas por debajo del 70% en vivienda habitual (o del 50% en otros inmuebles), la ley otorga un plazo de 10 días al deudor para presentar a un tercero que mejore la postura superando ese umbral, y tras ello un plazo al acreedor para adjudicárselo él al 70%/50%. Si ninguno ejerce ese derecho, el Letrado de la Administración de Justicia valora las circunstancias y aprueba tu remate.'
+      }
+    ];
+
+    const faqListEl = document.getElementById('faq-list');
+    const faqSearchEl = document.getElementById('faq-search');
+    const faqClearEl = document.getElementById('faq-clear');
+    const faqCountEl = document.getElementById('faq-count');
+    const faqEmptyEl = document.getElementById('faq-empty');
+    const faqExpandAllBtn = document.getElementById('faq-expand-all');
+    const catButtons = document.querySelectorAll('.faq-cat-btn');
+
+    let currentFaqCategory = 'todas';
+    let currentFaqQuery = '';
+    let allFaqsExpanded = false;
+
+    function renderFaqs() {
+      if (!faqListEl) return;
+      const normQuery = normalizar(currentFaqQuery.trim());
+
+      const filtered = faqsData.filter(item => {
+        const matchCat = currentFaqCategory === 'todas' || item.cat === currentFaqCategory;
+        const matchQuery = !normQuery ||
+          normalizar(item.q).includes(normQuery) ||
+          normalizar(item.a).includes(normQuery) ||
+          normalizar(item.catLabel).includes(normQuery);
+        return matchCat && matchQuery;
+      });
+
+      faqCountEl.textContent = `Mostrando ${filtered.length} de ${faqsData.length} preguntas frecuentes`;
+
+      if (filtered.length === 0) {
+        faqListEl.innerHTML = '';
+        faqEmptyEl.classList.remove('hidden');
+        return;
+      }
+
+      faqEmptyEl.classList.add('hidden');
+      faqListEl.innerHTML = filtered.map(item => `
+        <div class="faq-item bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden transition hover:border-emerald-400">
+          <button type="button" class="faq-toggle w-full text-left px-5 py-3.5 flex items-center justify-between gap-3 focus:outline-none" aria-expanded="${allFaqsExpanded}">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+              <span class="inline-block self-start px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 shrink-0">
+                ${item.catLabel}
+              </span>
+              <span class="font-bold text-slate-900 text-xs sm:text-sm leading-snug">
+                ${item.q}
+              </span>
+            </div>
+            <span class="faq-icon w-7 h-7 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0 text-slate-600 transition-transform duration-200 ${allFaqsExpanded ? 'rotate-180 bg-emerald-50 text-emerald-600 border-emerald-200' : ''}">
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </span>
+          </button>
+          <div class="faq-panel ${allFaqsExpanded ? '' : 'hidden'} px-5 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100 bg-slate-50/50">
+            ${item.a}
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.faq-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const panel = btn.nextElementSibling;
+          const icon = btn.querySelector('.faq-icon');
+          const isHidden = panel.classList.contains('hidden');
+
+          if (isHidden) {
+            panel.classList.remove('hidden');
+            icon.classList.add('rotate-180', 'bg-emerald-50', 'text-emerald-600', 'border-emerald-200');
+            btn.setAttribute('aria-expanded', 'true');
+          } else {
+            panel.classList.add('hidden');
+            icon.classList.remove('rotate-180', 'bg-emerald-50', 'text-emerald-600', 'border-emerald-200');
+            btn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+    }
+
+    if (catButtons) {
+      catButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentFaqCategory = btn.getAttribute('data-cat');
+          catButtons.forEach(b => {
+            b.className = 'faq-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-emerald-500 transition';
+          });
+          btn.className = 'faq-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-xs transition';
+          renderFaqs();
+        });
+      });
+    }
+
+    if (faqSearchEl) {
+      faqSearchEl.addEventListener('input', (e) => {
+        currentFaqQuery = e.target.value;
+        if (currentFaqQuery.length > 0) {
+          faqClearEl.classList.remove('hidden');
+        } else {
+          faqClearEl.classList.add('hidden');
+        }
+        renderFaqs();
+      });
+    }
+
+    if (faqClearEl) {
+      faqClearEl.addEventListener('click', () => {
+        faqSearchEl.value = '';
+        currentFaqQuery = '';
+        faqClearEl.classList.add('hidden');
+        renderFaqs();
+      });
+    }
+
+    if (faqExpandAllBtn) {
+      faqExpandAllBtn.addEventListener('click', () => {
+        allFaqsExpanded = !allFaqsExpanded;
+        faqExpandAllBtn.textContent = allFaqsExpanded ? 'Contraer todas' : 'Expandir todas';
+        renderFaqs();
+      });
+    }
+
+    // Arranque Unificado
     window.addEventListener('DOMContentLoaded', () => {
       initMapa();
       verificarRetornoStripe();
       verificarSesionSupabase();
       cargarDatos();
+      recalcularSubasta();
+      renderFaqs();
     });
   </script>
 </body>
